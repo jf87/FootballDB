@@ -1,0 +1,317 @@
+db_id,id,question,query,hardness,split,label,prediction,system,number_of_joins,number_of_projections,number_of_filters,number_of_aggregations,number_of_set_operations,number_of_subqueries,run,v1-v2-change,v1-v3-change,v2-v3-change,hardness_numeric,query_length,number_of_keywords,full_column_match,full_value_match,partial_column_match,question_similarity_train_query_id,similarity_score_nl,sql_similarity_train_query_id,similarity_score_sql,no_tokens
+exp_v3,2,Against which team did Switzerland loose in 2018,"SELECT T1.teamname, T3.teamname, T2.team_goals, T2.opponent_team_goals
+ FROM national_team AS T1 JOIN plays_match AS T2 ON T1.team_id = T2.team_id
+ JOIN national_opponent_team AS T3 ON T2.opponent_team_id = T3.team_id
+ WHERE T3.teamname = 'Switzerland' and T2.year = 2018 and T2.did_win = 'true'",hard,0,False,select teamname from national_opponent_team where year = 2018,T5$_{Picard}$,2,4,4,0,0,0,0.0,True,True,True,3,295,1,0,4,13,600,0.761025488,373,0.840677966,37
+exp_v3,6,All players that have the shirt number 13 and their name start with 'Alex',"select player.player_name
+ from player join player_fact on player.player_id = player_fact.player_id
+ where player_fact.shirt_number = 13
+ and player.player_name like 'Alex%'
+ group by player.player_name",extra,0,False,select t1.player_name from player as t1 join player_fact as t2 on t1.player_id = t2.player_id where t2.shirt_number = 13 and t1.player_name like '%alex%',T5$_{Picard}$,1,1,2,0,0,0,0.0,True,True,False,4,202,2,1,2,11,848,0.679871678,310,0.465346535,21
+exp_v3,11,At how many woldcups did italy participate in?,SELECT count(*) FROM national_team AS T1 WHERE T1.teamname = 'Italy',easy,0,False,select count(*) from world_cup where qualified_team = 'Italy',T5$_{Picard}$,0,1,1,1,0,0,0.0,False,False,False,1,68,0,0,4,2,792,0.989650965,792,1.0,10
+exp_v3,22,For which club does Maradonna play,"select T3.club_name
+ from player as T1
+ join player_club_team as T2 on T1.player_id = T2.player_id
+ join club as T3 on T2.club_id = T3.club_id
+ where T1.player_name like '%Maradona%'",extra,0,False,"select t1.club_name from club as t1 join player_club_team as t2 on t1.club_id = t2.club_id join player as t3 on t2.player_id = t3.player_id where t3.player_name = ""Maradonna""",T5$_{Picard}$,2,1,1,0,0,0,0.0,False,False,False,4,182,0,0,0,3,469,0.914927781,41,0.951871658,26
+exp_v3,51,Give me all matches where stage is Quarter-finals including the teamnames ordered descending by year\n,"SELECT m.year, nt.teamname, m.team_role, m.team_goals
+ FROM plays_match AS m
+ JOIN national_team as nt on m.team_id = nt.team_id
+ where m.stage = 'Quarter-finals'
+ order by m.year desc;",hard,0,False,"select t1.teamname from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id where t2.stage = ""Quarter-finals"" order by t2.year desc",T5$_{Picard}$,1,4,2,0,0,0,0.0,True,True,True,3,185,1,1,1,5,50,0.749126554,50,0.827027027,25
+exp_v3,89,Give me the year of the first world cup played.,select t1.year from world_cup as t1 order by t1.year asc limit 1;,medium,0,True,select year from world_cup order by year asc limit 1,T5$_{Picard}$,0,1,0,0,0,0,0.0,False,False,False,2,65,0,1,4,6,461,0.851404965,88,0.643678161,12
+exp_v3,94,How many games did Brazil win?,"SELECT count(*)
+ FROM national_team AS T1 JOIN plays_match AS T2 ON T1.team_id = T2.team_id 
+ JOIN national_opponent_team AS T3 ON T2.opponent_team_id = T3.team_id 
+ WHERE T1.teamname = 'Brazil' and T2.team_goals > T2.opponent_team_goals;",hard,0,False,"select count(*) from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id where t1.teamname = ""Brazil""",T5$_{Picard}$,2,1,2,1,0,0,0.0,True,True,True,3,238,0,0,4,3,170,0.919406831,1071,0.76446281,32
+exp_v3,104,How many goals did each player score over all encounters between Germany with Brazil after 2000?,"select nt.teamname, p.player_name, count(*)
+ from player as p
+ join player_fact as pf on p.player_id = pf.player_id
+ join national_team as nt on pf.team_id = nt.team_id
+ where pf.player_id in (
+ select mf.player_id
+ from plays_match as m
+ join match_fact as mf on m.match_team_id = mf.match_team_id
+ join national_team as n on n.team_id = m.team_id
+ join national_opponent_team as ot on m.opponent_team_id = ot.team_id
+ where mf.goal = 'true' and n.teamname = 'Brazil' and ot.teamname = 'Germany' OR mf.goal = 'true' and n.teamname = 'Germany' and ot.teamname = 'Brazil') and nt.year > 2000
+ GROUP BY nt.teamname, p.player_name
+ ORDER BY count(*) DESC",extra,0,False,"select t1.player_name, t2.goals_scored from player as t1 join plays_match as t3 on t1.player_id = t2.player_id join national_",T5$_{Picard}$,5,3,9,2,0,1,0.0,True,True,True,4,651,3,1,4,11,100,0.826116323,234,0.955453149,94
+exp_v3,108,How many Goals did Germany score against Brazil?,"SELECT T2.year, T2.opponent_team_goals
+ FROM national_team AS T1
+ JOIN plays_match AS T2 ON T1.team_id = T2.team_id
+ JOIN national_opponent_team AS T3 ON T2.opponent_team_id = T3.team_id
+ WHERE T1.teamname = 'Brazil' and T3.teamname = 'Germany'",hard,0,False,"select count(*) from national_opponent_team as t1 join national_team as t2 on t1.team_id = t2.team_id where t2.teamname = ""Germany"" and t2.team_initials = ""Brazil""",T5$_{Picard}$,2,2,2,0,0,0,0.0,True,True,True,3,244,0,1,4,9,127,0.879765451,439,0.853061224,31
+exp_v3,120,How many goals did Ronaldo Score?,"SELECT T2.player_name, count(*) FROM match_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id
+ WHERE T1.goal = 'true' and T2.player_name ilike '%Ronaldo%'
+ group by T2.player_name;",extra,0,False,select sum(goals_scored) from player as t1 join player_fact as t2 on t1.player_id = t2.player_id join national_team as t3 on t3.team_id = t2.team_id join,T5$_{Picard}$,1,2,2,1,0,0,0.0,True,True,False,4,189,0,1,2,9,118,0.961142957,110,0.968253968,26
+exp_v3,122,How many goals did switzerland score in 2018,"select sum(T2.team_goals)
+ from national_team as T1
+ join plays_match as T2 on T2.team_id = T1.team_id
+ where T1.teamname like '%Switzerland%' and T1.year = 2018",hard,0,False,select sum(goals_scored) from national_team as t1 join national_opponent_team as t2 on t1.team_id = t2.team_,T5$_{Picard}$,1,1,2,1,0,0,0.0,True,True,True,3,161,1,1,4,10,441,0.856562555,602,0.602484472,22
+exp_v3,123,how many goals has France scored in the 2022 world cup,"SELECT SUM (T2.team_goals)
+ FROM national_team AS T1
+ JOIN plays_match AS T2 ON T1.team_id = T2.team_id
+ JOIN national_opponent_team as T3 ON T2.opponent_team_id = T3.team_id
+ WHERE T2.year = 2022 and T1.teamname ilike '%France'",extra,0,False,select goals_scored from world_cup where qualified_team = 'France' and year = 2022,T5$_{Picard}$,2,2,2,0,0,0,0.0,True,True,True,4,228,0,1,4,10,107,0.884670258,107,0.978165939,31
+exp_v3,124,How many goals has Giroud scored?,SELECT count(*) FROM match_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T1.goal = 'true' and T2.player_name ilike '%Giroud%',hard,0,False,select sum(goals_scored) from player as t1 join player_club_team as t2 on t1.player_id = t2.player_id join national_opponent_team as t3 on t2.team,T5$_{Picard}$,1,1,2,1,0,0,0.0,False,False,False,3,145,0,1,1,9,110,0.917120218,115,0.95862069,22
+exp_v3,136,How many matches were played in each stadium at the 2014 World Cup in Brazil?,"SELECT stadium_name, count(stadium_name) FROM stadium as T1 JOIN plays_match as T2 on T1.stadium_id = T2.stadium_id WHERE T2.year = '2014' AND T2.team_role = 'home' GROUP BY T1.stadium_name ORDER BY count(T1.stadium_name) DESC;",extra,0,False,"select t1.stadium_name, count(*) from stadium as t1 join plays_match as t2 on t1.stadium_id = t2.stadium_id join world_cup as t3 on t2.year = t3.year where t3.year = 2014 and t3.venue = ""Sao Paulo"" group by t1.stadium_name",T5$_{Picard}$,1,2,2,2,0,0,0.0,False,True,True,4,227,0,0,4,8,164,0.821395218,964,0.591397849,30
+exp_v3,142,How many players did the swiss team have in the 2022 world cup,SELECT DISTINCT count(DISTINCT T1.player_name) FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Switzerland' and T2.year = 2022,hard,0,False,"select count(*) from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id where t1.year = 2022 and t1.teamname = ""Switzerland""",T5$_{Picard}$,2,3,2,1,0,0,0.0,False,False,False,3,223,0,0,0,15,135,0.802521944,535,0.919282511,32
+exp_v3,144,How many players have played so far?,SELECT count(distinct p.player_id) from player as p join player_fact as pf on p.player_id = pf.player_id;,easy,0,False,select count(*) from plays_match,T5$_{Picard}$,1,2,0,1,0,0,0.0,False,False,False,1,105,0,0,0,3,515,0.606597185,490,0.545454545,15
+exp_v3,147,How many red cards did the team of england receive in the world cup of 1966?,SELECT count( T1.red_card) FROM match_fact AS T1 JOIN plays_match AS T3 ON T1.match_team_id = T3.match_team_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'England' and T2.year = 1966 and T1.red_card = 'true';,hard,0,False,"select count(*) from world_cup as t1 join national_team as t2 on t1.qualified_team = t2.team_id where t1.year = 1966 and t2.teamname = ""England""",T5$_{Picard}$,2,2,3,1,0,0,0.0,True,True,True,3,237,1,1,4,17,146,0.815996826,109,0.877637131,35
+exp_v3,155,How many times did England win the world cup,"SELECT count(*)
+FROM world_cup_result AS T1
+    JOIN national_team AS T2 ON T1.team_id = T2.team_id
+WHERE T2.teamname = 'England' and T1.winner = 'True'",hard,0,False,"select count(*) from world_cup where qualified_team = ""England""",T5$_{Picard}$,1,1,3,1,0,0,0.0,True,True,True,3,152,1,0,4,5,446,0.793739378,170,0.907894737,20
+exp_v3,158,How many times did Switzerland play against Brasil,SELECT count(*) FROM plays_match AS T1 JOIN national_team AS T2 ON T1.team_id = T2.team_id JOIN national_opponent_team AS T3 ON T1.opponent_team_id = T3.team_id WHERE T2.teamname = 'Switzerland' and T3.teamname = 'Brazil',hard,0,False,"select count(*) from plays_match as t1 join national_opponent_team as t2 on t1.opponent_team_id = t2.team_id where t2.teamname = ""Switzerland"" and t2.teamname = ""Brazil""",T5$_{Picard}$,2,1,2,1,0,0,0.0,True,True,True,3,221,1,0,4,3,376,0.815612197,376,0.963800905,30
+exp_v3,173,How often did italy participate?,SELECT count(*) FROM national_team AS T1 WHERE T1.teamname = 'Italy',easy,0,False,"select count(*) from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id where t1.teamname = ""Italy""",T5$_{Picard}$,0,1,1,1,0,0,0.0,False,False,False,1,68,0,0,4,1,792,0.783982396,792,1.0,10
+exp_v3,177,In what Stadium did Messi play,"SELECT stadium_name from stadium AS T1 
+ join plays_match AS T2 on T1.stadium_id = T2.stadium_id 
+ join national_team AS T3 on T3.team_id = T2.team_id
+ join player_fact AS T4 on T4.team_id = T3.team_id 
+ join player AS T5 on T5.player_id = T4.player_id 
+ where player_name ilike '%Messi%' 
+ group by T1.stadium_name",extra,0,False,select t3.stadium_name from player as t1 join player_club_team as t2 on t1.player_id = t2.player_id join stadium as t3 on t3.stadium_i,T5$_{Picard}$,4,1,1,0,0,0,0.0,True,True,True,4,315,0,0,1,4,178,0.967747331,736,0.552380952,50
+exp_v3,181,In which club does Messi play?,"SELECT T1.club_team_name 
+ FROM player_club_team AS T1 
+ JOIN player AS T2 ON T1.player_id = T2.player_id 
+ WHERE T2.player_name ilike '%MESSI%'",hard,0,False,"select t1.club_name from club as t1 join player_club_team as t2 on t1.club_id = t2.club_id where t2.player_id = ""Messi""",T5$_{Picard}$,1,1,1,0,0,0,0.0,True,True,False,3,144,0,0,1,4,178,0.783156216,182,0.916666667,21
+exp_v3,184,In which country were the least amounts of games played?,"select s.country, count(DISTINCT m.match_id)
+ from stadium as s
+ join plays_match as m on s.stadium_id = m.stadium_id
+ group by s.country
+ order by count(DISTINCT m.match_id) asc
+ limit 1;",extra,0,False,select t1.country from club as t1 join league as t2 on t1.club_id = t2.league_id join world_cup as t3,T5$_{Picard}$,1,3,0,2,0,0,0.0,True,True,True,4,188,5,1,0,4,956,0.614174843,164,0.60106383,26
+exp_v3,186,In which coutry is A.C. Milan playing?,select c.country from club as c where c.club_name ilike '%A.C. Milan%';,medium,0,False,"select t1.country from club as t1 join plays_match as t2 on t1.club_id = t2.team_id where t1.club_name = ""A.C. Milan""",T5$_{Picard}$,0,1,1,0,0,0,0.0,False,False,False,2,71,0,0,3,2,23,0.576320052,251,0.915492958,11
+exp_v3,204,in which year did switzerland win against serbia.,SELECT T1.year FROM plays_match AS T1 JOIN national_team AS T2 ON T1.team_id = T2.team_id JOIN national_opponent_team AS T3 ON T1.opponent_team_id = T3.team_id WHERE T2.teamname = 'Switzerland' and T3.teamname = 'Serbia',hard,0,False,select year from plays_match where team_id = 'Switzerland' and team_id = 'Serbia',T5$_{Picard}$,2,1,2,0,0,0,0.0,True,True,True,3,220,1,1,4,9,1074,0.746620893,376,0.977272727,30
+exp_v3,214,List all clubs from Switzerland that were founded after 1930.,select * from club as c where c.country = 'Switzerland' and c.found_year > 1930;,medium,0,False,"select club_name from club where country = ""CH"" and found_year > 1930",T5$_{Picard}$,0,1,2,0,0,0,0.0,False,False,False,2,80,2,0,4,3,91,0.550393879,215,0.625,14
+exp_v3,219,"List all players for both teams in the lineup of the first game of 2006. Return the player names, the team name and shirt number.","select distinct nt.teamname, p.player_name, pf.shirt_number
+ from player as p
+ join player_fact as pf on p.player_id = pf.player_id
+ join national_team as nt on pf.team_id = nt.team_id
+ where pf.player_id in (
+ select mf.player_id
+ from plays_match as m
+ join match_fact as mf on m.match_team_id = mf.match_team_id
+ where m.year = 2006 and mf.line_up = 'true'
+ and m.match_id in (
+ select m.match_id
+ from plays_match as m
+ where m.year = 2006
+ order by m.datetime
+ limit 1))",extra,0,False,"select t1.player_name, t3.teamname, t3.shirt_number from player as t1 join player_club_team as t2",T5$_{Picard}$,3,4,6,0,0,2,0.0,False,True,True,4,475,2,3,4,41,848,0.623701811,234,0.553968254,70
+exp_v3,221,List all results from all games played at the Allianz Arena.,"select HNT.teamname, ANT.teamname, m.team_goals, m.opponent_team_goals
+ from plays_match as m
+ join stadium as s on m.stadium_id = s.stadium_id
+ join national_team as HNT on m.team_id = HNT.team_id
+ join national_opponent_team as ANT on m.opponent_team_id = ANT.team_id
+ where s.stadium_name = 'Allianz Arena' and m.team_role = 'home';",extra,0,False,exp_V3,T5$_{Picard}$,3,4,2,0,0,0,0.0,True,True,True,4,335,0,0,1,1,223,0.588428497,332,0.707462687,42
+exp_v3,228,List the clubs in which Messi plays,SELECT * FROM player_club_team AS T3 JOIN player AS T2 ON T3.player_id = T2.player_id WHERE T2.player_name ilike '%MESSI%',hard,0,False,"select t1.club_name from club as t1 join player_club_team as t2 on t1.club_id = t2.club_id where t2.player_id = ""Messi""",T5$_{Picard}$,1,1,1,0,0,0,0.0,False,False,False,3,122,0,0,1,4,178,0.702620625,182,0.820143885,18
+exp_v3,231,List the home and away teams of all games played in the Giuseppe Meazza stadium.,"select HNT.teamname, ANT.teamname
+ from plays_match as m
+ join stadium as s on m.stadium_id = s.stadium_id
+ join national_team as HNT on m.team_id = HNT.team_id
+ join national_opponent_team as ANT on m.opponent_team_id = ANT.team_id
+ where s.stadium_name = 'Giuseppe Meazza' and m.team_role = 'home';",extra,0,False,"select t1.teamname, t1.team_initials from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id join stadium as t3 on t3.stadium_id = t2.stadium_id where t3.stadium_name = ""Giuseppe Meazza""",T5$_{Picard}$,3,2,2,0,0,0,0.0,True,True,True,4,300,1,0,4,15,97,0.711396515,332,0.633333333,40
+exp_v3,246,players of switzerland at worldcup 2018,"SELECT T1.player_name
+ FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id 
+ JOIN national_team AS T2 ON T3.team_id = T2.team_id 
+ WHERE T2.teamname = 'Switzerland' and T2.year = 2018",hard,0,False,select t1.player_name from player as t1 join plays_match as t2 on t1.player_id = t2.player_i,T5$_{Picard}$,2,1,2,0,0,0,0.0,False,False,False,3,203,1,0,4,2,245,0.807156146,532,0.965517241,32
+exp_v3,259,Show all national teams who have won more than 2 world cups,"SELECT T2.teamname FROM world_cup_result AS T1 JOIN national_team AS T2 ON T1.team_id = T2.team_id WHERE T1.winner = 'true' GROUP BY T2.teamname
+ HAVING COUNT(t1.year) > 2",hard,0,False,select t1.teamname from national_team as t1 join world_cup as t2 on t1.team_id = t2.qualified_team group by t1.teamname having count(*) > 2,T5$_{Picard}$,1,1,2,1,0,0,0.0,True,True,True,3,171,1,0,4,12,566,0.771500111,715,0.77173913,25
+exp_v3,268,Show Brazilian club names,SELECT * FROM club WHERE country = 'Brazil',easy,0,False,"select club_name from club where country = ""Brazil""",T5$_{Picard}$,0,1,1,0,0,0,0.0,False,False,False,1,43,0,1,0,9,312,0.685265064,859,0.654545455,8
+exp_v3,284,Show me the name of the player with the most played matches.,"select t1.player_name, count(*) from player as t1
+ join match_fact as t13 on t1.player_id = t13.player_id
+ group by t1.player_name order by count(*) desc limit 1;",extra,0,False,exp_V3,T5$_{Picard}$,1,2,0,2,0,0,0.0,True,True,False,4,162,2,1,0,12,78,0.705833435,393,0.669856459,24
+exp_v3,295,Show names of clubs from Austria,SELECT T1.club_name FROM club AS T1 WHERE T1.country = 'Austria',easy,0,False,"select club_name from club where country = ""Austria""",T5$_{Picard}$,0,1,1,0,0,0,0.0,False,False,False,1,64,0,0,3,9,312,0.775143027,850,0.671428571,10
+exp_v3,297,Show number of teams in 2022,SELECT count(T1.teamname) from national_team as T1 where T1.year = '2022',easy,0,True,select count(*) from national_team where year = 2022,T5$_{Picard}$,0,1,1,1,0,0,0.0,False,False,False,1,73,1,0,0,13,573,0.776159763,61,0.712328767,10
+exp_v3,314,Show the names of all players from France in 2018,"SELECT T1.player_name
+ FROM player AS T1
+ JOIN player_fact AS T3 ON T1.player_id = T3.player_id
+ JOIN national_team AS T2 ON T3.team_id = T2.team_id
+ WHERE T2.teamname = 'France' and T2.year = 2018",hard,0,False,select t1.player_name from player as t1 join national_team as t2 on t1.player_id = t2.team_id where t2.year = 2018,T5$_{Picard}$,2,1,2,0,0,0,0.0,True,True,False,3,197,0,0,4,9,332,0.768046558,652,0.959390863,30
+exp_v3,319,Show the number of goals of matches with Switzerland against Spain,"SELECT T2.year, T1.teamname, T3.teamname, T2.team_goals, T2.opponent_team_goals
+FROM national_team AS T1
+    JOIN plays_match AS T2 ON T1.team_id = T2.team_id
+    JOIN national_opponent_team AS T3 ON T2.opponent_team_id = T3.team_id
+WHERE T1.teamname = 'Spain' and T3.teamname = 'Switzerland';",extra,0,False,"select count(*) from plays_match as t1 join national_opponent_team as t2 on t1.opponent_team_id = t2.team_id where t2.teamname = ""Switzerland"" and t2.teamname = ""Spain""",T5$_{Picard}$,2,5,3,0,0,0,0.0,True,True,True,4,293,2,1,3,12,126,0.800331712,90,0.863481229,32
+exp_v3,327,show the result of the final of 2018,"SELECT teamname, team_goals FROM national_team AS T1 JOIN plays_match AS T2 ON T1.team_id = T2.team_id JOIN world_cup_result AS T3 ON T1.team_id = T3.team_id WHERE T2.stage = 'Final' and T3.year = 2018",hard,0,False,select t1.win_conditions from plays_match as t1 join national_team as t2 on t1.team_id = t2.team_id where t2.year = 2018,T5$_{Picard}$,2,2,3,0,0,0,0.0,True,True,True,3,201,0,0,1,0,401,0.736386538,612,0.777777778,31
+exp_v3,351,Show the score of Brazil against Argentina,"SELECT T1.teamname, T2.team_role, T2.team_goals, T2.opponent_team_goals, T2.year FROM national_team AS T1 JOIN plays_match AS T2 ON T1.team_id = T2.team_id JOIN national_opponent_team AS T3 ON T2.opponent_team_id = T3.team_id WHERE T1.teamname = 'Brazil' and T3.teamname = 'Argentina'",hard,0,False,"select t1.goals from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id join national_opponent_team as t3 on t2.team_id = t3.team_id where t1.year = 2014 and t3.teamname = ""Brazil"" and t3.teamname = ""Argentina""",T5$_{Picard}$,2,5,2,0,0,0,0.0,True,True,True,3,284,0,0,4,0,333,0.818804562,90,0.968641115,34
+exp_v3,377,What clubs had players at the 2018 World Cup?,"SELECT DISTINCT T1.club_team_name 
+ FROM player_club_team AS T1 
+ JOIN player AS T3 
+ ON T1.player_id = T3.player_id 
+ JOIN player_fact AS 
+ T4 ON T3.player_id = T4.player_id 
+ JOIN national_team AS T2 
+ ON T4.team_id = T2.team_id 
+ WHERE T2.year = '2018 World Cup'",extra,0,False,select t1.club_name from club as t1 join player_club_team as t2 on t1.club_id = t2.club_id join world_cup as t3 on t1.club_id = t2.club_id where t3.year = 2018,T5$_{Picard}$,3,2,1,0,0,0,0.0,True,True,False,4,265,0,0,0,5,527,0.78336972,304,0.691275168,45
+exp_v3,388,What is the country code of Arrigo Sacchi?,select c.country_code from coach as c where c.coach_name ilike '%Arrigo Sacchi%';,medium,0,False,"select country_code from coach as t1 join player as t2 on t1.coach_id = t2.player_id where t2.player_name = ""Arrigo Sacchi""",T5$_{Picard}$,0,1,1,0,0,0,0.0,False,False,False,2,81,1,1,2,4,366,0.489517421,249,0.833333333,11
+exp_v3,395,what is the result of austria vs. italy,"SELECT T1.teamname, T3.teamname, T2.team_goals, T2.opponent_team_goals, T2.year 
+ FROM national_team AS T1 JOIN plays_match AS T2 ON T1.team_id = T2.team_id 
+ JOIN national_opponent_team AS T3 ON T2.opponent_team_id = T3.team_id 
+ WHERE T1.teamname = 'Austria' and T3.teamname = 'Italy'
+ order by year desc",extra,0,False,"select t1.goals from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id join national_opponent_team as t3 on t2.team_id = t3.team_id where t1.year = 2018 and t3.teamname = ""Italy""",T5$_{Picard}$,2,5,2,0,0,0,0.0,True,True,True,4,306,0,0,4,1,456,0.644917369,90,0.892156863,41
+exp_v3,407,what jersey number did David Beckham wore,SELECT T1.teamname FROM national_team AS T1 JOIN player_fact AS T3 ON T1.team_id = T3.team_id JOIN player AS T2 ON T3.player_id = T2.player_id WHERE T2.player_name ilike '%David Beckham%',extra,0,False,select shirt_number from player_fact where player_id = 'David Beckham',T5$_{Picard}$,2,1,1,0,0,0,0.0,False,False,False,4,187,1,0,2,2,847,0.555214286,199,0.941176471,27
+exp_v3,412,What player was substituted out the most during the 2014 world cup?,"SELECT p.player_name, COUNT(DISTINCT mf.match_team_id)
+ FROM match_fact AS mf
+ JOIN plays_match AS m ON m.match_team_id = mf.match_team_id
+ JOIN player AS p ON p.player_id = mf.player_id
+ WHERE m.year = 2014
+ AND mf.substitution_out = 'true'
+ GROUP BY p.player_name
+ ORDER BY COUNT(DISTINCT mf.match_team_id) DESC
+ LIMIT 1",extra,0,False,"select t1.player_name, t1.wikidata_id from player as t1 join world_cup as t2 on t1.player_id",T5$_{Picard}$,2,3,2,2,0,0,0.0,False,True,True,4,322,2,0,0,3,78,0.689947128,411,0.950310559,42
+exp_v3,426,What team shot the most goals in 2018,"SELECT T1.teamname, T1.goals FROM national_team AS T1 WHERE T1.year = 2018 ORDER BY T1.goals DESC LIMIT 1",hard,0,False,select teamname from national_opponent_team where year = 2018 group by teamname order by sum(goals) desc limit 1,T5$_{Picard}$,0,2,1,0,0,0,0.0,False,False,False,3,105,2,1,0,20,782,0.860365152,622,0.685714286,17
+exp_v3,435,What was the result of England vs. Spain,SELECT T1.coach_name FROM coach AS T1 JOIN player_fact AS T2 ON T1.coach_id = T2.coach_id JOIN national_team AS T4 ON T2.team_id = T4.team_id JOIN plays_match AS T3 ON T4.team_id = T3.team_id WHERE T2.shirt_number = 10 and T3.year = 2006,hard,0,False,"select t1.goals from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id where t1.teamname = ""England"" and t1.teamname = ""Spain""",T5$_{Picard}$,3,1,2,0,0,0,0.0,True,True,True,3,237,1,0,3,0,373,0.639624238,628,0.734126984,38
+exp_v3,438,What was the score between Germany and Brazil in 2014?,"select T1.teamname, T3.teamname, T2.team_goals, T2.opponent_team_goals
+ from national_team as T1
+ join plays_match as T2 on T2.team_id = T1.team_id
+ join national_team as T3 on T3.team_id = T2.opponent_team_id
+ where T1.teamname like '%Brazil%' and T3.teamname like '%Germany%' and T2.year = 2014",extra,0,False,"select t1.goals from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id where t2.year = 2014 and t1.teamname = ""Germany"" intersect select t1.goals from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id where t2.year = 2014 and t1.teamname = ""Brazil""",T5$_{Picard}$,2,4,3,0,0,0,0.0,True,True,True,4,296,2,0,4,1,109,0.808224082,338,0.833846154,37
+exp_v3,447,when did England win the world cup,"SELECT T2.year
+ FROM national_team AS T1
+ JOIN world_cup_result AS T2 ON T2.team_id = T1.team_id
+ WHERE T1.teamname ilike '%England%' and winner = 'True'
+ ORDER BY T2.year DESC",extra,0,False,"select datetime, t1.teamname from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id where t1.teamname = 'England' and t2.year = 2014",T5$_{Picard}$,1,1,3,0,0,0,0.0,True,True,True,4,176,1,0,4,3,446,0.870731473,446,0.704545455,26
+exp_v3,491,Which distinct players have gotten at lleast one yellow card at the world cup? Return the name.,"select distinct t1.player_name
+ from player as t1
+ join match_fact as t2 on t2.player_id = t1.player_id
+ where t2.yellow_card = 'true';",medium,0,False,select distinct t1.player_name from player as t1 join world_cup as t2 on t1.player_id = t2.player_i,T5$_{Picard}$,1,2,1,0,0,0,0.0,True,True,False,2,135,2,1,4,13,489,0.928261876,490,0.962962963,19
+exp_v3,492,Which distinct players have scored at least a goal at the world cup? Return the name.,"select distinct t1.player_name
+ from player as t1
+ join match_fact as t2 on t2.player_id = t1.player_id
+ where t2.goal = 'true';",medium,0,False,select distinct t1.player_name from player as t1 join world_cup as t2 on t1.player_id,T5$_{Picard}$,1,2,1,0,0,0,0.0,True,True,False,2,128,3,1,0,17,411,0.755590916,490,0.946969697,19
+exp_v3,506,Which national team won the world cup in 1998,SELECT T1.teamname FROM national_team AS T1 JOIN world_cup_result AS T2 ON T1.team_id = T2.team_id WHERE T2.year = 1998 and T2.winner = 'true',medium,0,False,select teamname from national_team where year = 1998,T5$_{Picard}$,1,1,3,0,0,0,0.0,True,True,True,2,142,0,0,0,12,757,0.806962729,927,0.992957746,22
+exp_v3,518,which player has the most yellow cards overall?,"SELECT T1.player_name, count( T2.yellow_card) FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id GROUP BY T1.player_name ORDER BY count( T2.yellow_card) DESC LIMIT 1",extra,0,False,select t1.player_name from player as t1 join player_fact as t2 on t1.player_id = t2.player_id group by t1.player_id order by count(*) desc limit 1,T5$_{Picard}$,1,3,0,2,0,0,0.0,False,False,False,4,185,2,1,0,7,884,0.711764157,515,0.67027027,26
+exp_v3,528,which players have played in the final of worldcup 2014,"SELECT DISTINCT T1.player_name 
+ FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id 
+ JOIN plays_match AS T4 ON T2.team_id = T4.team_id 
+ WHERE T4.stage = 'Final' and T2.year = 2014",extra,0,False,select t1.player_name from player as t1 join plays_match as t2 on t1.player_id = t2.team_id join world_cup as t4 on t2.team_id = t4.qualified_team where t4.year = 2014,T5$_{Picard}$,3,2,3,0,0,0,0.0,True,True,True,4,254,0,0,1,4,575,0.710785329,535,0.744094488,42
+exp_v3,529,Which players of the world cup 2022 were born in 2004 or later?,"SELECT DISTINCT T2.player_name
+ FROM national_team AS T1
+ JOIN player_fact AS T4 ON T1.team_id = T4.team_id
+ JOIN player AS T2 ON T4.player_id = T2.player_id
+ JOIN match_fact AS T5 ON T2.player_id = T5.player_id
+ JOIN plays_match AS T3 ON T5.match_team_id = T3.match_team_id
+ WHERE T2.dob >= '2004-01-01' and T3.year = 2022",extra,0,False,select player_name from player where dob >= 2004,T5$_{Picard}$,4,2,2,0,0,0,0.0,False,True,True,4,323,0,0,1,3,738,0.716699123,662,0.85915493,47
+exp_v3,530,Which players play for Bayern Munich ?,"select distinct p.player_name
+ from player AS p 
+ join player_club_team AS pc on p.player_id = pc.player_id
+ join club AS c on pc.club_id = c.club_id
+ where club_team_name = 'FC Bayern Munich'",hard,0,False,"select t1.player_name from player as t1 join player_club_team as t2 on t1.player_id = t2.player_id join club as t3 on t2.club_id = t3.club_id where t3.club_name = ""Bayern Munich""",T5$_{Picard}$,2,2,1,0,0,0,0.0,True,True,False,3,192,0,0,3,2,526,0.63752383,41,0.677083333,30
+exp_v3,534,Which players played for Switzerland in 2014? Return the names of the players,"select distinct p.player_name from player as p 
+ join player_fact as pf on p.player_id = pf.player_id 
+ join national_team as nt on pf.team_id = nt.team_id
+ where nt.teamname = 'Switzerland' and year = 2014;",hard,0,False,select t1.player_name from player as t1 join player_fact as t2 on t1.player_id = t2.player_id join national_team as t3 on t2.team_id = t3.team_id where t3.year = 2014,T5$_{Picard}$,2,2,2,0,0,0,0.0,False,False,False,3,207,1,0,4,12,535,0.862837374,43,0.768115942,33
+exp_v3,551,Which stadium hosts the most games,"SELECT T1.stadium_name, count(*) FROM stadium AS T1 JOIN plays_match AS T2 ON T1.stadium_id = T2.stadium_id GROUP BY T1.stadium_name ORDER BY count(*) DESC LIMIT 1",extra,0,False,select t1.stadium_name from stadium as t1 join plays_match as t2 on t1.stadium_id = t2.stadium_id group by t2.stadium_id order by count(*) desc limit 1,T5$_{Picard}$,1,2,0,2,0,0,0.0,False,True,True,4,163,2,0,0,2,179,0.770503819,550,0.754601227,24
+exp_v3,552,Which Stadium was used the most?,SELECT T1.stadium_name FROM stadium AS T1 GROUP BY T1.stadium_name ORDER BY count(*) DESC LIMIT 1,hard,0,False,select t2.stadium_name from plays_match as t1 join stadium as t2 on t1.stadium_id = t2.stadium_id group by t1.stadium_id order by count(*) desc limit 1,T5$_{Picard}$,0,1,0,1,0,0,0.0,False,False,False,3,97,2,0,0,2,179,0.7534343,179,0.762886598,15
+exp_v3,554,which stadiumm has the largest capacity and how much,"SELECT T1.capacity, T1.stadium_name FROM stadium AS T1 GROUP BY T1.capacity, T1.stadium_name ORDER BY max( T1.capacity) DESC LIMIT 1",hard,0,True,"select stadium_name, capacity from stadium order by capacity desc limit 1",T5$_{Picard}$,0,2,0,1,0,0,0.0,False,False,False,3,132,2,1,0,1,550,0.762898684,179,0.590909091,18
+exp_v3,565,which team has won the most championchips,"SELECT T1.teamname, count(*) FROM national_team AS T1 JOIN world_cup_result AS T2 ON T1.team_id = T2.team_id WHERE T2.winner = 'true' GROUP BY T1.teamname ORDER BY count(*) DESC LIMIT 1",extra,0,False,select t1.teamname from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id group by t2.team_id order by count(*) desc limit 1,T5$_{Picard}$,1,2,2,2,0,0,0.0,True,True,True,4,185,2,0,0,11,566,0.70251298,409,1.0,28
+exp_v3,567,Which team has won the world cup the most? Return the team name and the number of wins,"select nt.teamname, count(*) from world_cup_result as wcr
+ join national_team as nt
+ on wcr.team_id = nt.team_id
+ where wcr.winner = 'true'
+ group by nt.team_initials, nt.teamname
+ order by count(*) desc limit 1;",extra,0,False,"select t1.teamname, count(*) from national_team as t1 join world_cup as t2 on t1.team_id = t2.qualified_team group by t2.qualified_team order by count(*) desc limit 1",T5$_{Picard}$,1,2,2,2,0,0,0.0,True,True,True,4,212,4,1,0,31,757,0.849191785,716,0.768867925,29
+exp_v3,568,Which team is in Group A,SELECT DISTINCT T2.teamname FROM plays_match AS T1 JOIN national_team AS T2 on T1.team_id = T2.team_id WHERE T1.year = 2022 and T1.stage = 'Group A';,medium,0,False,select teamname from national_team where team_id in (select team_id from plays_match group by team_id having year = 2014),T5$_{Picard}$,1,2,2,0,0,0,0.0,True,True,True,2,149,0,0,1,13,596,0.726186275,582,0.657718121,24
+exp_v3,569,Which team is in Group A in 2018,"select distinct T2.teamname
+ from plays_match as T1
+ join national_team as T2 on T1.team_id = T2.team_id
+ where T1.year = 2018 and T1.stage = 'Group A'",medium,0,False,select teamname from national_team where year = 2018 group by teamname having sum(goals) >= 4,T5$_{Picard}$,1,2,2,0,0,0,0.0,True,True,True,2,151,0,0,1,14,602,0.693166256,189,0.737967914,24
+exp_v3,578,Which team score the most goals in a final?,"select m.year, nt.teamname, m.team_goals, ot.teamname, m.opponent_team_goals
+ from plays_match as m
+ join national_team as nt on m.team_id = nt.team_id
+ join national_opponent_team as ot on m.opponent_team_id = ot.team_id
+ where m.stage = 'Final'
+ order by team_goals desc limit 1",extra,0,False,select t1.teamname from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id join world_cup as t3 on t2.team_id = t3.team_,T5$_{Picard}$,2,5,2,0,0,0,0.0,True,True,True,4,280,2,1,1,20,579,0.898981571,332,0.771428571,36
+exp_v3,584,Which team was second in 2018,SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN plays_match AS T2 ON T1.team_id = T2.team_id JOIN world_cup_result AS T3 ON T1.team_id = T3.team_id WHERE T3.year = 2018 and T3.runner_up = 'true',hard,0,False,select teamname from national_team order by year desc limit 2,T5$_{Picard}$,2,2,2,0,0,0,0.0,True,True,True,3,204,0,0,4,13,602,0.679453135,1060,0.795121951,31
+exp_v3,585,Which team was third the most time in all world cups?,"SELECT teamname, COUNT(*) FROM world_cup_result AS w
+ JOIN national_team AS n ON w.team_id = n.team_id
+ WHERE w.third = 'true'
+ GROUP BY n.teamname
+ ORDER BY COUNT(*) DESC",extra,0,False,select qualified_team from world_cup group by qualified_team order by count(*) desc limit 3,T5$_{Picard}$,1,2,1,2,0,0,0.0,True,True,True,4,171,2,1,4,15,566,0.804901719,590,0.965116279,26
+exp_v3,591,Which Team won the most recent world cup and in which year did they win?,"SELECT T1.teamname, T2.year FROM national_team AS T1 JOIN world_cup_result AS T2 ON T1.team_id = T2.team_id WHERE T2.winner = 'true' ORDER BY T2.year DESC LIMIT 1",extra,0,False,"select qualified_team, year from world_cup order by year desc limit 1",T5$_{Picard}$,1,2,2,0,0,0,0.0,True,True,True,4,162,3,1,0,20,757,0.884420753,710,0.969135802,25
+exp_v3,595,Which teams are in group A in 2022?,select distinct T2.teamname from plays_match as T1 join national_team as T2 on T1.team_id = T2.team_id where T1.year = 2022 and T1.stage = 'Group A',medium,0,False,select team_id from national_opponent_team where year = 2022 group by team_id having sum(goals) >= 4,T5$_{Picard}$,1,2,2,0,0,0,0.0,True,True,True,2,148,0,0,1,13,573,0.790938616,189,0.732620321,24
+exp_v3,605,which teams played semifinals in 2018?,"select distinct T2.teamname
+ from plays_match as T1
+ join national_team as T2 on T1.team_id = T2.team_id
+ where T1.year = 2018 and T1.stage = 'Semi-finals'",medium,0,False,select t2.teamname from plays_match as t1 join national_team as t2 on t1.team_id = t2.team_id where t1.year = 2018,T5$_{Picard}$,1,2,2,0,0,0,0.0,True,True,True,2,155,0,0,0,13,602,0.842551708,189,0.71657754,23
+exp_v3,620,Who did Germany draw against in 2022 World Cup?,"SELECT t2.teamname
+ FROM national_team AS T1
+ JOIN plays_match AS T3 ON T1.team_id = T3.team_id
+ JOIN national_opponent_team AS T2 ON T3.opponent_team_id = T2.team_id
+ WHERE T1.teamname = 'Germany'
+ and T2.year = 2022 and T3.is_draw = 'true';",hard,0,False,"select t2.teamname from plays_match as t1 join national_team as t2 on t1.team_id = t2.team_id where t1.year = 2022 and t2.teamname = ""Germany""",T5$_{Picard}$,2,1,3,0,0,0,0.0,True,True,True,3,242,0,0,4,3,610,0.720813513,1071,0.830578512,34
+exp_v3,621,Who has in the last 5 world cups scored a goal in the second half of the extension?,"SELECT DISTINCT T2.player_name 
+ FROM national_team AS T1 
+ JOIN player_fact AS T4 ON T1.team_id = T4.team_id 
+ JOIN player AS T2 ON T4.player_id = T2.player_id 
+ JOIN match_fact AS T5 ON T2.player_id = T5.player_id 
+ JOIN plays_match AS T3 ON T5.match_team_id = T3.match_team_id 
+ WHERE T5.minute >= 120 AND T5.goal = 'true' and T3.year BETWEEN 2002 AND 2022",extra,0,False,select t1.player_name from player as t1 join plays_match as t2 on t1.player_id = t2.team_id where t2.half_time_team_goals = 2 and t2.year > 5,T5$_{Picard}$,4,2,4,0,0,0,0.0,False,True,True,4,359,0,1,4,14,663,0.752634704,662,0.846796657,59
+exp_v3,645,who is the goal keeper of germany?,"SELECT T1.player_name, T3.position FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Germany' and T3.position = 'GK'",hard,0,False,"select t2.player_name from national_team as t1 join player as t2 on t1.team_id = t2.player_id where t1.year = 2010 and t1.teamname = ""Germany""",T5$_{Picard}$,2,2,2,0,0,0,0.0,False,False,False,3,211,0,1,4,9,633,0.723503232,232,0.876777251,31
+exp_v3,667,Who scored the most goals in 2022,"SELECT T1.player_name, count(*)
+ FROM player AS T1
+ JOIN match_fact AS T2 ON T1.player_id = T2.player_id
+ Join plays_match AS T3 ON T3.match_team_id = T2.match_team_id
+ WHERE T2.goal = 'true' and T3.Year = 2022
+ GROUP BY T1.player_name
+ ORDER BY count(*) DESC
+ LIMIT 5",extra,0,False,select t1.player_name from player as t1 join player_fact as t2 on t1.player_id = t2.player_id join national_opponent_team as t3 on t2.team_id = t3.team_id where t3.year = 2022 order by t3.goals,T5$_{Picard}$,2,2,2,2,0,0,0.0,False,True,True,4,268,2,1,0,10,769,0.768150568,523,0.787313433,40
+exp_v3,668,Who scored the most goals in the World Cup ever?,"SELECT T1.player_name, count(*) FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.goal = 'true' GROUP BY T1.player_name ORDER BY count(*) DESC",extra,0,False,select t1.player_name from player as t1 join world_cup as t2 on t1.player_id,T5$_{Picard}$,1,2,1,2,0,0,0.0,False,False,False,4,172,2,1,0,10,411,0.926926613,515,1.0,26
+exp_v3,691,who was the topscorer of the worldcup 2018,"SELECT T1.player_name, count(*) FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id
+ JOIN plays_match AS T4 ON T2.match_team_id = T4.match_team_id JOIN national_team AS T3 ON T4.team_id = T3.team_id
+ WHERE T2.goal = 'true' and T3.year = 2018 
+ GROUP BY T1.player_name 
+ ORDER BY count(*) DESC",extra,0,False,"select t1.player_name, t2.goals_scored from player as t1 join world_cup as t2 on t1.player_i",T5$_{Picard}$,3,2,2,2,0,0,0.0,True,True,True,4,311,0,0,0,0,725,0.620041728,782,0.980707395,48
+exp_v3,708,Who won the 2014 world cup?,SELECT T1.teamname FROM national_team AS T1 JOIN world_cup_result AS T2 ON T1.team_id = T2.team_id WHERE T2.year = 2014 and T2.winner = 'true',medium,0,False,select qualified_team from world_cup where year = 2014,T5$_{Picard}$,1,1,3,0,0,0,0.0,True,True,True,2,142,0,0,0,0,721,0.908597708,704,1.0,22
+exp_v3,741,which players played for Switzerland in 2018,SELECT DISTINCT T1.player_name FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Switzerland' and T2.year = 2018,hard,0,False,"select t1.player_name from player as t1 join player_fact as t2 on t1.player_id = t2.player_id join national_team as t3 on t2.team_id = t3.team_id where t3.year = 2018 and t3.teamname = ""Switzerland""",T5$_{Picard}$,2,2,2,0,0,0,0.0,False,False,False,3,207,1,0,4,4,535,0.986525416,535,1.0,31
+exp_v3,749,Which players are playing for Switzerland in 2022,SELECT T1.player_name FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Switzerland' and T2.year = 2022,hard,0,False,select t1.player_name from player as t1 join player_fact as t2 on t1.player_id = t2.player_id join national_team as t3 on t2.team_id = t3.team_id where,T5$_{Picard}$,2,1,2,0,0,0,0.0,False,False,False,3,198,1,0,4,3,532,0.981597126,532,1.0,30
+exp_v3,761,Which national team has won most world cup,"SELECT T1.teamname, count(*) FROM national_team AS T1 JOIN world_cup_result AS T3 ON T1.team_id = T3.team_id JOIN world_cup AS T2 ON T3.year = T2.year WHERE T3.winner = 'true' GROUP BY T1.teamname ORDER BY count(*) DESC LIMIT 1;",extra,0,False,select t1.teamname from national_team as t1 join national_opponent_team as t2 on t1.team_id = t2.team_id group by t1.teamname order by count(*) desc limit 1,T5$_{Picard}$,2,2,2,2,0,0,0.0,True,True,True,4,228,2,0,0,11,757,0.948565781,757,0.815789474,36
+exp_v3,773,What is the score of the final in year 2018,"SELECT T1.teamname, T2.year, T2.team_goals, T2.stage FROM national_team AS T1 JOIN plays_match AS T2 ON T1.team_id = T2.team_id WHERE T2.year = 2018 and T2.stage = 'Final';",extra,0,False,select goals_scored from world_cup where year = 2018,T5$_{Picard}$,1,4,2,0,0,0,0.0,True,True,True,4,172,0,1,1,7,602,0.749722838,265,0.715789474,25
+exp_v3,779,Where was the world cup in 2018?,SELECT venue FROM world_cup WHERE world_cup.year = 2018;,easy,0,True,select venue from world_cup where year = 2018,T5$_{Picard}$,0,1,1,0,0,0,0.0,False,False,False,1,56,0,0,0,1,475,0.97578752,475,1.0,8
+exp_v3,803,What is the result of Argentina vs. Saudiarabia,"SELECT T1.teamname, T2.teamname, T3.team_goals, T3.opponent_team_goals FROM national_team AS T1
+ JOIN plays_match AS T3 ON T1.team_id = T3.team_id
+ JOIN national_opponent_team AS T2 ON T3.opponent_team_id = T2.team_id
+ WHERE T1.teamname = 'Saudi Arabia' and T2.teamname = 'Argentina'",hard,0,False,"select t1.goals from national_team as t1 join plays_match as t2 on t1.team_id = t2.team_id where t1.teamname = ""Argentina"" and t1.teamname = ""Saudiarabia""",T5$_{Picard}$,2,4,2,0,0,0,0.0,True,True,True,3,283,0,0,4,1,373,0.733206689,90,0.902439024,34
+exp_v3,861,Which is the oldest club?,"SELECT T1.club_name, T1.found_year FROM club AS T1
+ 
+  ORDER BY T1.found_year ASC LIMIT 1",medium,0,False,select club_name from club order by found_year desc limit 1,T5$_{Picard}$,0,2,0,0,0,0,0.0,False,False,False,2,89,1,0,0,4,918,0.914086223,918,0.95505618,14
+exp_v3,866,which country has less club ?,"SELECT T1.country , count( T1.club_id) FROM club AS T1
+ GROUP BY T1.country
+ ORDER BY count( T1.club_id) ASC limit 5",hard,0,False,select country from club group by country order by count(*) asc limit 1,T5$_{Picard}$,0,4,0,2,0,0,0.0,False,False,False,3,116,1,1,0,5,478,0.605876923,179,0.594827586,19
+exp_v3,867,Which teams played in world cup year 1972?,SELECT T1.teamname FROM national_team AS T1 WHERE T1.year = 1972,easy,0,True,select qualified_team from world_cup where year = 1972,T5$_{Picard}$,0,1,1,0,0,0,0.0,False,False,False,1,64,0,1,0,18,571,0.708343267,792,0.647058824,10
+exp_v3,888,Who has received the yellow ed card?,SELECT DISTINCT T1.player_name FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.yellow_card = 'true',medium,0,False,select t1.player_name from player as t1 join player_fact as t2 on t1.player_id = t2.player_id join league as t3,T5$_{Picard}$,1,2,1,0,0,0,0.0,False,False,False,2,131,0,0,0,5,884,0.592074871,1038,0.755725191,19
+exp_v3,889,"What are the names, the countries and the years of the first and last club ever founded ?","SELECT club_name, country, found_year FROM club WHERE found_year = (SELECT MIN(found_year) FROM club) OR found_year = (SELECT MAX(found_year) FROM club)",extra,0,False,"select club_name, country, found_year from club order by found_year limit 1",T5$_{Picard}$,0,3,2,2,0,0,0.0,False,False,False,4,152,2,2,4,16,811,0.908569038,811,0.381578947,20
+exp_v3,894,The Winner of the year 1987,"SELECT teamname FROM national_team
+ JOIN world_cup_result ON national_team.team_id = world_cup_result.team_id
+ WHERE world_cup_result.year = 1987 and winner = 'true';",medium,0,True,select t1.player_name from player as t1 join player_fact as t2 on t1.player_id = t2.player_id join national_team as t3 on t2.team_id = t3.team_id where t3.year = 1987,T5$_{Picard}$,1,1,3,0,0,0,0.0,True,True,True,2,166,0,2,1,6,704,0.655835986,85,0.63253012,18
+exp_v3,924,Show all players who lost a game,SELECT DISTINCT player_name FROM player AS T1 JOIN player_fact as T2 on T1.player_id = T2.player_id JOIN plays_match as T3 on T2.team_id = T3.team_id WHERE T3.did_win = 'false',hard,0,False,select player_name from player where player_id not in (select opponent_team_id from plays_match),T5$_{Picard}$,2,2,2,0,0,0,0.0,True,True,True,3,176,0,0,0,2,853,0.699513018,848,0.747311828,27
+exp_v3,928,Who won the world cup 1994?,SELECT T1.teamname FROM national_team AS T1 JOIN world_cup_result AS T2 ON T1.team_id = T2.team_id WHERE T2.year = 1994 and T2.winner = 'true',medium,0,False,select qualified_team from world_cup where year = 1994,T5$_{Picard}$,1,1,3,0,0,0,0.0,True,True,True,2,142,0,0,0,0,927,0.987457752,927,1.0,22
+exp_v3,958,cities of stadiums in which an own goal was scored,SELECT DISTINCT T1.city FROM stadium AS T1 JOIN plays_match AS T3 ON T1.stadium_id = T3.stadium_id JOIN match_fact AS T2 ON T3.match_team_id = T2.match_team_id WHERE T2.own_goal = 'true',hard,0,False,select t1.city from stadium as t1 join plays_match as t2 on t1.stadium_id = t2.stadium_id join national_team as t3 on t2.team_id = t3.team_id where t3.goals = 'own_goals',T5$_{Picard}$,2,2,1,0,0,0,0.0,False,True,True,3,186,0,2,0,14,828,0.968089342,828,0.913978495,27
+exp_v3,961,which player made goals?,"SELECT DISTINCT count(DISTINCT *), T1.player_id FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.goal = 'true' GROUP BY T1.player_id ORDER BY count(*) DESC",extra,0,False,select distinct t1.player_name from player as t1 join national_opponent_team as t2 on t1.player_id = t2.player_i,T5$_{Picard}$,1,4,1,2,0,0,0.0,False,False,False,4,186,0,1,0,10,970,0.87584579,515,0.779569892,28
+exp_v3,1005,Trainer Italy Worldcup 2006 ?,"SELECT DISTINCT T1.coach_name
+ FROM coach AS T1
+  JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id
+  JOIN national_team AS T2 ON T3.team_id = T2.team_id
+ WHERE T2.year = 2006 and T2.teamname = 'Italy'",hard,0,False,"select t1.coach_name from coach as t1 join player_fact as t2 on t1.coach_id = t2.coach_id join national_team as t3 on t2.team_id = t3.team_id where t3.year = 2006 and t3.teamname = ""Italy""",T5$_{Picard}$,2,2,2,0,0,0,0.0,False,False,False,3,203,0,0,4,0,998,0.97731024,993,0.916666667,31
+exp_v3,1024,toatal Goal score of shirt number 13?,"SELECT count(*)
+ FROM match_fact AS T1
+ JOIN player_fact as T2 on T1.player_id = T2.player_id
+ where T2.shirt_number = 13 AND T1.goal = 'true'",medium,0,False,select sum(t2.goals_scored) from player_fact as t1 join national_team as t3 on t1.player_id = t2.player_id join plays_match as t4 on t4.match_id = t1.match_,T5$_{Picard}$,1,1,2,1,0,0,0.0,False,False,False,2,142,1,2,0,10,131,0.697258711,1025,1.0,22
+exp_v3,1027,total Goal score of shirt number 13?,"SELECT count(*)
+ FROM match_fact AS T1
+ JOIN player_fact as T2 on T1.player_id = T2.player_id
+ where T2.shirt_number = 13 AND T1.goal = 'true'",medium,0,False,select sum(goals_scored) from player_fact as t1 join player_club_team as t2 on t1.player_id = t2.player_i,T5$_{Picard}$,1,1,2,1,0,0,0.0,False,False,False,2,142,2,2,0,10,131,0.809494972,1025,1.0,22
+exp_v3,1039,How many times did Cristiano Ronald miss a penalty?,SELECT count(*) FROM match_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T1.missed_penalty = 'true' and T2.player_name ilike '%Cristiano Ronald%',hard,0,False,"select count(*) from player as t1 join player_fact as t2 on t1.player_id = t2.player_id where t1.player_name = ""Cristiano Ronaldo""",T5$_{Picard}$,1,1,2,1,0,0,0.0,False,False,False,3,165,0,1,1,5,103,0.722384691,102,0.921212121,23
+exp_v3,1043,Goal score of shirt number 13?,"SELECT count(*)
+ FROM match_fact as T1
+ JOIN player_fact as T2 on T1.player_id = T2.player_id
+ WHERE T2.shirt_number = 13 AND T1.goal = 'true'",medium,0,False,select t1.goals_scored from player as t2 join player_fact as t3 on t1.player_id = t3.player_id join national_opponent_team as t4 on t4.team_id = t3.,T5$_{Picard}$,1,1,2,1,0,0,0.0,False,False,False,2,142,1,2,0,10,131,0.779734194,1037,1.0,22
+exp_v3,1044,all coaches training a player with the shirt number 10 and attendes the world cup of 2006,SELECT DISTINCT T1.coach_name FROM coach AS T1 JOIN player_fact AS T2 ON T1.coach_id = T2.coach_id JOIN national_team AS T4 ON T2.team_id = T4.team_id JOIN plays_match AS T3 ON T4.team_id = T3.team_id WHERE T2.shirt_number = 10 and T3.year = 2006,extra,0,False,exp_,T5$_{Picard}$,3,2,2,0,0,0,0.0,True,True,True,4,246,2,1,2,7,1020,0.882165968,633,0.719512195,39
+exp_v3,1075,Against which country lost germany in wm 2014.,"SELECT T1.teamname
+ FROM national_team AS T1
+  JOIN plays_match AS T2 ON T1.team_id = T2.team_id
+  JOIN national_opponent_team AS T4 ON T2.opponent_team_id = T4.team_id
+ WHERE T4.teamname = 'Germany' and T2.did_win = 'true' AND T4.year = 2014",hard,0,False,exp_V3,T5$_{Picard}$,2,1,4,0,0,0,0.0,True,True,True,3,242,1,1,4,3,1071,0.941318512,1071,1.0,34

@@ -1,0 +1,2102 @@
+[
+  {
+    "db_id": "exp_v1",
+    "id": 1,
+    "question": "Against which team did Giroud shoot a goal?",
+    "query": "SELECT Distinct T4.teamname FROM player as T1\n join match_fact as T2 on T1.player_id = T2.player_id\n join match AS T3 on T2.match_id = T3.match_id\n join national_team AS T4 on T3.home_team_id = T4.team_id\n WHERE T1.player_name ilike '%Giroud%' and T2.goal = 'true' and T4.team_id not in(\n     select T5.team_id\n     from player as T1\n     join player_fact as T5 on T1.player_id = T5.player_id\n     join national_team as T4 on T4.team_id = T5.team_id\n     WHERE T1.player_name ilike '%Giroud%'\n     )\nUNION\nSELECT Distinct T4.teamname FROM player as T1\n join match_fact as T2 on T1.player_id = T2.player_id\n join match AS T3 on T2.match_id = T3.match_id\n join national_team AS T4 on T3.away_team_id = T4.team_id\n WHERE T1.player_name ilike '%Giroud%' and T2.goal = 'true' and T4.team_id not in(\n     select T5.team_id\n     from player as T1\n     join player_fact as T5 on T1.player_id = T5.player_id\n     join national_team as T4 on T4.team_id = T5.team_id\n     WHERE T1.player_name ilike '%Giroud%'\n     )",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 4,
+    "question": "All clubs where the name contains the word 'fc' and 'united'",
+    "query": "select club_name\r\n from club where club_name like '%FC%'\r\n and club_name like '%United%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 5,
+    "question": "All coaches of the swiss national team",
+    "query": "SELECT distinct T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Switzerland'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 9,
+    "question": "all the coaches of germany",
+    "query": "SELECT T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Germany'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 12,
+    "question": "Average time for games' events in the world cup year 2018",
+    "query": "SELECT AVG(T1.minute) FROM match_fact AS T1 JOIN match as T2 on T1.match_id = T2.match_id WHERE T2.year = '2018';",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 14,
+    "question": "Coach of France when they won the World Cup?",
+    "query": "SELECT DISTINCT T2.coach_name\nFROM national_team AS T1\n    JOIN player_fact AS T4 ON T1.team_id = T4.team_id\n    JOIN coach AS T2 ON T4.coach_id = T2.coach_id\n    JOIN world_cup AS T3 ON T1.team_id = T3.winner\nWHERE T1.teamname = 'France'\n",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 18,
+    "question": "every player with the first name leo who played in the world cup in the year 1930",
+    "query": "SELECT player_name FROM player AS p JOIN player_fact AS pf ON p.player_id = pf.player_id JOIN world_cup AS wc ON pf.year_id = wc.year WHERE wc.year = 1930 AND player_name LIKE 'Leo%';",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 21,
+    "question": "For which club does Klose play",
+    "query": "SELECT DISTINCT T1.club_team_name FROM player_club_team AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T2.player_name ilike '%Klose%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 23,
+    "question": "For which club does Neymar play?",
+    "query": "SELECT DISTINCT T1.club_team_name \r\n FROM player_club_team AS T1 \r\n JOIN player AS T2 ON T1.player_id = T2.player_id \r\n WHERE T2.player_name ilike '%Neymar%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 30,
+    "question": "For which clubs did Cristiano Ronaldo play in his career?",
+    "query": "SELECT DISTINCT T1.club_team_name FROM player_club_team AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T2.player_name ilike '%Cristiano Ronaldo%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 41,
+    "question": "For which team does Paolo Maldini play?",
+    "query": "select T3.club_name\r\n from player as T1\r\n join player_club_team as T2 on T1.player_id = T2.player_id\r\n join club as T3 on T2.club_id = T3.club_id\r\n where T1.player_name like '%Paolo Maldini%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 43,
+    "question": "For which team has Yobo played? Return the team name.",
+    "query": "select distinct nt.teamname from player as p\r\n join player_fact as pf\r\n on p.player_id = pf.player_id\r\n join national_team as nt\r\n on pf.team_id = nt.team_id\r\n where p.player_name ilike '%YOBO%';",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 50,
+    "question": "Give me all matches where stage is final including the teamnames, the goals scored by the team and the year.",
+    "query": "SELECT m.year, nt.teamname, nt2.teamname, m.home_team_goals, m.away_team_goals\n FROM match AS m\n JOIN national_team AS nt on m.home_team_id = nt.team_id\n JOIN national_team AS nt2 on m.away_team_id = nt2.team_id\n where m.stage = 'Final';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 61,
+    "question": "Give me all teams names from the world cup 1994.",
+    "query": "select t1.teamname from national_team as t1 where t1.year = 1994;",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 65,
+    "question": "Give me all the national team names grouped by team and ordered by year from the latest to the earliest.",
+    "query": "select t1.teamname, t1.year from national_team as t1 order by t1.year desc;",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 69,
+    "question": "Give me all the venues.",
+    "query": "select t1.venue from world_cup as t1;",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 71,
+    "question": "Give me the count of all penalties.",
+    "query": "select count(*)\r\n from match_fact as t1\r\n where t1.penalty = 'true' or t1.missed_penalty = 'true';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 73,
+    "question": "Give me the count of missed penalties.",
+    "query": "select count(*) from match_fact as t1 where t1.missed_penalty = 'true';",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 74,
+    "question": "Give me the country, year and attendance of the world cup with the biggest attendance",
+    "query": "SELECT t1.country, t2.year, t2.attendance from stadium as t1 join match as t13 on t1.stadium_id = t13.stadium_id join world_cup as t2 on t13.year = t2.year order by t2.attendance desc limit 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 78,
+    "question": "Give me the name of the player with the most substitutions in.",
+    "query": "select p.player_name, count(mf.substitution_in)\r\n from player as p\r\n join match_fact as mf on mf.player_id = p.player_id\r\n where mf.substitution_in = 'true'\r\n group by p.player_name order by count(mf.substitution_in) desc limit 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 83,
+    "question": "Give me the team names of the first four placed teams across all world cups.",
+    "query": "select t2.teamname, winner from world_cup as t1 join national_team as t2 on t1.winner = t2.team_id UNION select t2.teamname, runner_up   from world_cup as t1    join national_team as t2 on t1.runner_up = t2.team_id UNION select t2.teamname, third from world_cup as t1 join national_team as t2 on t1.third = t2.team_id UNION select t2.teamname, fourth  from world_cup as t1 join national_team as t2 on t1.fourth = t2.team_id",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 85,
+    "question": "Give me the teamname of the winner of the world cup in 1954",
+    "query": "SELECT teamname\n from national_team as t1\n JOIN world_cup as t2 on t1.team_id = t2.winner\n WHERE t2.year = 1954",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 88,
+    "question": "Give me the year and attendance of the world cup with the biggest attendance.",
+    "query": "SELECT t1.year, t1.attendance from world_cup as t1 order by t1.attendance desc limit 1;",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 90,
+    "question": "How did Brazil vs. Argentina play?",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Brazil' AND T3.teamname = 'Argentina' OR T3.teamname = 'Brazil' AND T1.teamname = 'Argentina'\n",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 91,
+    "question": "How many clubs are from Zurich",
+    "query": "SELECT count(*) from club WHERE country ilike '%Switzerland' and club_name ilike '%Z\u00fcrich%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 97,
+    "question": "How many games were played in the Giuseppe Meazza stadium?",
+    "query": "select count(*)\r\n from stadium as s\r\n join match as m on s.stadium_id = m.stadium_id\r\n where s.stadium_name = 'Giuseppe Meazza';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 99,
+    "question": "How many goals and when did Giroud shoot?",
+    "query": "SELECT count(T1.goal), T3.year\nFROM match_fact AS T1\n    JOIN match AS T3 on T3.match_id = T1.match_id\n    JOIN player AS T2 ON T1.player_id = T2.player_id\nWHERE T1.goal = 'true' and T2.player_name ilike '%Giroud%' GROUP BY T3.year\n",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 100,
+    "question": "How many goals did brazil score at worldcups?",
+    "query": "SELECT count(*)\nFROM match_fact AS T1\nWHERE team_id in (\n    select t2.team_id from national_team as T2\n           where t2.teamname = 'Brazil'\n    ) and T1.goal = 'true'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 101,
+    "question": "How many goals did Brazil score in 2022?",
+    "query": "SELECT sum(T2.away_team_goals)\nFROM national_team AS T1\nJOIN match AS T2 ON T1.team_id = T2.away_team_id\nWHERE T1.teamname ilike '%Brazil%'  and T1.year = 2022\nUNION ALL\nSELECT sum(T2.home_team_goals)\nFROM national_team AS T1\nJOIN match AS T2 ON T1.team_id = T2.home_team_id\nWHERE T1.teamname ilike '%Brazil%'  and T1.year = 2022",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 102,
+    "question": "How many goals did Christiano Ronaldo score?",
+    "query": "SELECT count(*) FROM match_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T1.goal = 'true' and T2.player_name ilike '%Cristiano Ronaldo%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 103,
+    "question": "How many goals did Cristiano Ronaldo score?",
+    "query": "SELECT count(*) FROM match_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T1.goal = 'true' and T2.player_name ilike '%Cristiano Ronaldo%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 105,
+    "question": "how many goals did france score",
+    "query": "SELECT count(*) FROM match_fact AS T1\n JOIN match AS T3 ON T1.match_id = T3.match_id\n JOIN national_team AS T2 ON T3.home_team_id = T2.team_id\n                  WHERE T1.goal = 'true' and T2.teamname = 'France'\n UNION\n  SELECT count(*) FROM match_fact AS T1\n JOIN match AS T3 ON T1.match_id = T3.match_id\n JOIN national_team AS T2 ON T3.away_team_id = T2.team_id\n WHERE T1.goal = 'true' and T2.teamname = 'France'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 107,
+    "question": "how many goals did France score in the 1998 world cup",
+    "query": "SELECT sum(t.home_team_goals)\nFROM(\nSELECT T2.home_team_goals, T2.match_id\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\nWHERE T2.year = 1998 and T1.teamname ilike '%France%'\nUNION\nSELECT T2.away_team_goals, T2.match_id\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.away_team_id\nWHERE T2.year = 1998 and T1.teamname ilike '%France%') as t",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 109,
+    "question": "How many goals did Germany score in 2014",
+    "query": "SELECT count(*)\nFROM match_fact AS T1\n    JOIN match AS T3 ON T1.match_id = T3.match_id\nWHERE T1.team_id in (\n    SELECT T2.team_id\n    FROM national_team as T2\n    WHERE teamname = 'Germany'\n    )\nand T3.year = 2014 and T1.goal = 'true'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 110,
+    "question": "How many goals did Giroud shoot?",
+    "query": "SELECT T2.player_name, count(*) FROM match_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id\r\n WHERE T1.goal = 'true' and T2.player_name ilike '%Giroud%'\r\n group by T2.player_name;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 112,
+    "question": "how many goals did Korea score in total",
+    "query": "SELECT count(*)\nFROM match_fact AS T1\n    JOIN match AS T2 ON T1.match_id = T2.match_id\nWHERE T1.team_id in (\n    SELECT T3.team_id\n    FROM national_team AS T3\n    WHERE T3.teamname ilike '%Korea%'\n    )\nand T1.goal = 'true'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 115,
+    "question": "How many goals did Neymar score?",
+    "query": "SELECT count(*) FROM match_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T1.goal = 'true' and T2.player_name ilike '%Neymar%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 118,
+    "question": "How many goals did Ronaldo from Brazil score?",
+    "query": "SELECT count(*)\r\n FROM match_fact AS T1\r\n JOIN player AS T2 ON T1.player_id = T2.player_id\r\n JOIN national_team AS T3 ON T1.team_id = T3.team_id\r\n WHERE T1.goal = 'true' and T2.player_name ilike '%Ronaldo%' and T3.teamname ilike '%Brazil%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 119,
+    "question": "How many goals did Ronaldo from the national team Brazil score?",
+    "query": "SELECT count(*)\r\n FROM match_fact AS T1\r\n JOIN player AS T2 ON T1.player_id = T2.player_id\r\n JOIN national_team AS T3 ON T1.team_id = T3.team_id\r\n WHERE T1.goal = 'true' and T2.player_name ilike '%Ronaldo%' and T3.teamname ilike '%Brazil%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 126,
+    "question": "How many Goals has Switzerland?",
+    "query": "SELECT COUNT(*)\n FROM MATCH_FACT AS T1\n JOIN MATCH AS T3 ON T1.MATCH_ID = T3.MATCH_ID\n WHERE T1.GOAL = 'true'\n AND T1.TEAM_ID IN\n (SELECT T2.TEAM_ID FROM national_team AS T2 WHERE T2.teamname = 'Switzerland')",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 127,
+    "question": "How many goals have the Germany teams scored in total?",
+    "query": "select sum(t1.goals), t1.teamname from national_team as t1 where t1.teamname like '%Germany%';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 131,
+    "question": "How many goals were shot for each shirt number?",
+    "query": "SELECT T3.year, T5.shirt_number, count(*)\r\n FROM player AS T1\r\n JOIN match_fact AS T2 ON T1.player_id = T2.player_id\r\n Join match AS T3 ON T3.match_id = T2.match_id\r\n JOIN national_team AS T4 ON T4.team_id = T2.team_id\r\n JOIN player_fact as T5 ON T1.player_id = T5.player_id\r\n WHERE T2.goal = 'true'\r\n GROUP BY T3.year,T5.shirt_number\r\n ORDER BY T3.year DESC, count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 135,
+    "question": "How many matches did Switzerland play in 2022?",
+    "query": "SELECT COUNT(*)\nFROM (\nSELECT T1.match_id\nFROM match AS T1\n    JOIN national_team AS T2 ON T1.home_team_id = T2.team_id\nWHERE T2.teamname = 'Switzerland' and T1.year = 2022\nUNION\nSELECT T1.match_id\nFROM match AS T1\n    JOIN national_team AS T2 ON T1.away_team_id = T2.team_id\nWHERE T2.teamname = 'Switzerland' and T1.year = 2022) as T4",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 140,
+    "question": "How many people fit inside all the stadiums.",
+    "query": "SELECT SUM(capacity) from stadium;",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 146,
+    "question": "How many red card were given out in the world cup of 2014?",
+    "query": "SELECT count(*)\r\n from match_fact AS T1\r\n join match AS T2 on T1.match_id = T2.match_id\r\n where T2.year = 2014 and T1.red_card = 'True'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 151,
+    "question": "How many teams participate in the 2022 world cup",
+    "query": "SELECT DISTINCT Count(*) from national_team Where year = 2022",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 162,
+    "question": "How many times played Yugoslavia in a world cup?",
+    "query": "SELECT count(*)\nFROM world_cup AS T1\n    JOIN match AS T3 ON T1.year = T3.year\n    JOIN national_team AS T2 ON T3.home_team_id = T2.team_id\n    JOIN national_team AS T4 ON T3.away_team_id = T4.team_id\nWHERE T2.teamname = 'Yugoslavia' OR T4.teamname = 'Yugoslavia'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 164,
+    "question": "How many world cup matches were played in European stadiums?",
+    "query": "select count(*)\r\n from stadium as s\r\n join match as m on s.stadium_id = m.stadium_id\r\n where s.continent = 'Europe';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 165,
+    "question": "How many yellow cards does Xherdan Shaqiri have?",
+    "query": "SELECT count( T1.yellow_card) FROM match_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T2.player_name ilike '%Xherdan Shaqiri%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 167,
+    "question": "How often did Brazil win against Argentina",
+    "query": "SELECT DISTINCT * FROM national_team AS T1\nJOIN match as T3 on T1.team_id = T3.home_team_id\nJOIN national_team as T5 on T5.team_id = T3.away_team_id\nWHERE T1.teamname = 'Argentina' and T5.teamname = 'Brazil' and T3.did_home_win = 'false'\n",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 168,
+    "question": "How often did Brazil win against Germany",
+    "query": "SELECT count(*)\nFROM (\nSELECT T2.match_id\n FROM national_team AS T1\n JOIN match AS T2 ON T2.home_team_id = T1.team_id\n JOIN national_team AS T3 ON T3.team_id = T2.away_team_id\n WHERE T3.teamname = 'Brazil' and T1.teamname = 'Germany' and T2.did_home_win = 'False' and T2.is_draw = 'False' \nUNION\nSELECT T2.match_id\n FROM national_team AS T1\n JOIN match AS T2 ON T2.home_team_id = T1.team_id\n JOIN national_team AS T3 ON T3.team_id = T2.away_team_id\n WHERE T1.teamname = 'Brazil' and T3.teamname = 'Germany' and T2.did_home_win = 'True') as t",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 170,
+    "question": "How often did Brazil win?",
+    "query": "SELECT count(*)\nFROM world_cup AS T1\n    JOIN national_team AS T2 ON T1.winner = T2.team_id\nWHERE T2.teamname = 'Brazil'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 172,
+    "question": "How often did Germany play against England in the Allianz Arena?",
+    "query": "SELECT COUNT(*) FROM match AS T1 JOIN national_team AS T2 on T1.home_team_id = T2.team_id JOIN national_team as T3 on T1.away_team_id = T3.team_id JOIN stadium AS s on T1.stadium_id = s.stadium_id WHERE T2.teamname ilike '%Germany%' AND T3.teamname ilike '%England%' AND s.stadium_name = 'Allianz Arena'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 176,
+    "question": "In what stadium did Harry Souttar play in in 1986",
+    "query": "SELECT DISTINCT T1.stadium_name\n FROM stadium AS T1\n JOIN match AS T4 ON T1.stadium_id = T4.stadium_id\n JOIN match_fact AS T5 ON T4.match_id = T5.match_id\n JOIN player AS T2 ON T5.player_id = T2.player_id\n JOIN player_fact AS T6 ON T2.player_id = T6.player_id\n JOIN national_team AS T3 ON T6.team_id = T3.team_id\n WHERE T2.player_name = 'Harry Souttar' and T3.year = 1986",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 178,
+    "question": "In what Stadium did Messi play?",
+    "query": "SELECT DISTINCT T1.STADIUM_NAME, T2.player_name\n FROM STADIUM AS T1\n JOIN MATCH AS T4 ON T1.STADIUM_ID = T4.STADIUM_ID\n JOIN MATCH_FACT AS T5 ON T4.MATCH_ID = T5.MATCH_ID\n JOIN PLAYER AS T2 ON T5.PLAYER_ID = T2.PLAYER_ID\n JOIN PLAYER_FACT AS T6 ON T2.PLAYER_ID = T6.PLAYER_ID\n JOIN NATIONAL_TEAM AS T3 ON T6.TEAM_ID = T3.TEAM_ID\n WHERE T2.PLAYER_NAME ilike '%MESSI%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 179,
+    "question": "in which city are the most stadiums?",
+    "query": "SELECT T1.city, count(*) FROM stadium AS T1 GROUP BY T1.city ORDER BY count(*) DESC LIMIT 1",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 180,
+    "question": "In which city were the most matches played during the 2014 world cup?",
+    "query": "SELECT st.city\r\n FROM stadium AS st \r\n JOIN match AS m ON m.stadium_id = st.stadium_id\r\n WHERE m.year = 2014\r\n GROUP BY st.city \r\n ORDER BY COUNT(m.match_id) DESC\r\n LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 182,
+    "question": "In which club does Neymar play",
+    "query": "SELECT T1.club_team_name FROM player_club_team AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T2.player_name ilike '%Neymar%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 189,
+    "question": "In which group is Brazil",
+    "query": "Select distinct t1.year,T1.stage from match as T1 join national_team as T3 on T1.away_team_id = T3.team_id where T3.year = 2022 and T3.teamname = 'Brazil' and T1.stage ilike '%Group%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 190,
+    "question": "in which minute where the most goals shot",
+    "query": "SELECT T1.minute, COUNT(*) FROM match_fact as T1 WHERE T1.goal = 'true' GROUP BY T1.minute ORDER BY COUNT(T1.minute) DESC LIMIT 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 191,
+    "question": "In which stadium was the 2010 world cup final held?",
+    "query": "SELECT T1.stadium_name\nFROM stadium AS T1\n    JOIN match AS T3 ON T1.stadium_id = T3.stadium_id\nWHERE T3.year = 2010 and T3.stage = 'Final'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 197,
+    "question": "In which stadiums did Switzerland play in 2018",
+    "query": "SELECT T1.stadium_name FROM stadium AS T1 JOIN match AS T3 ON T1.stadium_id = T3.stadium_id JOIN national_team AS T5 ON T3.away_team_id = T5.team_id WHERE T5.teamname = 'Switzerland' and T5.year = 2018 UNION SELECT T1.stadium_name FROM stadium AS T1 JOIN match AS T3 ON T1.stadium_id = T3.stadium_id JOIN national_team AS T5 ON T3.home_team_id = T5.team_id WHERE T5.teamname = 'Switzerland' and T5.year = 2018",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 199,
+    "question": "In which team does the player \"di maria\" play in?",
+    "query": "SELECT T1.teamname FROM national_team AS T1 JOIN player_fact AS T3 ON T1.team_id = T3.team_id JOIN player AS T2 ON T3.player_id = T2.player_id WHERE T2.player_name ilike '%DI MARIA%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 209,
+    "question": "In which years did Germany reach the finals",
+    "query": "select m.year\n from match as m\n join national_team as n on m.away_team_id = n.team_id\n where n.teamname = 'Germany' and m.stage = 'Final'\nunion\nselect m.year\n from match as m\n join national_team as n on m.home_team_id = n.team_id\n where n.teamname = 'Germany' and m.stage = 'Final'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 211,
+    "question": "In which years did Neymar score?",
+    "query": "SELECT distinct T1.year\n FROM match AS T1\n JOIN match_fact AS T3 ON T1.match_id = T3.match_id\n JOIN player AS T2 ON T3.player_id = T2.player_id\n WHERE T2.player_name ilike '%Neymar%' and T3.goal = 'true'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 213,
+    "question": "List all African stadiums.",
+    "query": "select * from stadium as s where s.continent = 'Africa';",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 215,
+    "question": "List all clubs from United Kingdom.",
+    "query": "select * from club as c where c.country = 'United Kingdom';",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 216,
+    "question": "List all coaches from the county with code ITA.",
+    "query": "select c.coach_name from coach as c where c.country_code = 'ITA';",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 223,
+    "question": "List all stadiums.",
+    "query": "select * from stadium;",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 232,
+    "question": "List the names of the players for Germany in the world cup 2022",
+    "query": "SELECT T1.player_name FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Germany' and T2.year = 2022",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 234,
+    "question": "List the top scorers of all matches between Italy and Germany.",
+    "query": "select nt.teamname, p.player_name, count(*)\n from player as p\n join player_fact as pf on p.player_id = pf.player_id\n join national_team as nt on pf.team_id = nt.team_id\n where pf.player_id in (\n select mf.player_id\n from match as m\n join match_fact as mf on m.match_id = mf.match_id\n join national_team as n on n.team_id = m.home_team_id\n join national_team as ot on ot.team_id = m.away_team_id\n where mf.goal = 'true' and n.teamname = 'Italy' and ot.teamname = 'Germany' OR mf.goal = 'true' and n.teamname = 'Germany' and ot.teamname = 'Italy')\n GROUP BY nt.teamname, p.player_name\n ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 242,
+    "question": "Number of games switzerland played since 2000-01-01 and the number of games they won",
+    "query": "select count(*)\nFROM (SELECT T1.match_id FROM match AS T1 JOIN national_team AS T2 ON T1.home_team_id = T2.team_id\n      WHERE T2.teamname = 'Switzerland'\n        and T1.year >= 2000\n        and T1.did_home_win = 'true'\n      UNION\n      SELECT T1.match_id\n      FROM match AS T1\n               JOIN national_team AS T2 ON T1.away_team_id = T2.team_id WHERE T2.teamname = 'Switzerland' and T1.year >= 2000 and T1.did_home_win = 'false' and T1.is_draw = 'false' ) as t",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 245,
+    "question": "players from switzerland",
+    "query": "SELECT T1.player_name \r\n FROM player AS T1 \r\n JOIN player_fact AS T3 ON T1.player_id = T3.player_id \r\n JOIN national_team AS T2 ON T3.team_id = T2.team_id \r\n WHERE T2.teamname = 'Switzerland'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 249,
+    "question": "Return the country code of coach J\u00fcrgen Klinsmann.",
+    "query": "select c.country_code from coach as c where c.coach_name ilike '%J\u00fcrgen Klinsmann%';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 251,
+    "question": "Return the country of the club FC Sion.",
+    "query": "select c.country from club as c where c.club_name ilike '%FC Sion%';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 252,
+    "question": "Return the date of birth of Cristiano Ronaldo.",
+    "query": "select p.dob from player as p where p.player_name ilike '%Cristiano Ronaldo%';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 257,
+    "question": "Show all goals of Spain",
+    "query": "SELECT sum(T1.goals)\nFROM national_team AS T1\nWHERE T1.teamname = 'Spain' and T1.team_id in (\n    SELECT T2.team_id\n    FROM match_fact AS T2\n    WHERE T2.goal = 'true' )",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 258,
+    "question": "Show all goals of the Spanish team",
+    "query": "SELECT T1.teamname, T1.goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN match_fact AS T3 ON T3.match_id = T2.match_id\nWHERE T1.teamname = 'Spain' and T3.goal = 'true'\nUNION\nSELECT T1.teamname, T1.goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.away_team_id\n    JOIN match_fact AS T3 ON T3.match_id = T2.match_id\nWHERE T1.teamname = 'Spain' and T3.goal = 'true'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 262,
+    "question": "Show all the games of Spain. Also show the result of Spain, the opponent team, and year of the game and order by year",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T3.teamname = 'Spain' OR T1.teamname = 'Spain'\nORDER BY T3.year ASC;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 263,
+    "question": "Show all the games of Spain. Also show the result, the opponent team, and year of the game and order by year",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T3.teamname = 'Spain' OR T1.teamname = 'Spain'\nORDER BY T3.year",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 265,
+    "question": "Show all the games of Spain. Also show the team goals , the opponent team goals, and year of the game and order by year",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Spain' OR T3.teamname = 'Spain' ORDER BY T2.year ASC",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 273,
+    "question": "show french players and how many goals they scored in descending order",
+    "query": "SELECT T1.player_name, count(*)\r\n FROM player AS T1\r\n JOIN match_fact AS T2 ON T1.player_id = T2.player_id\r\n Join match AS T3 ON T3.match_id = T2.match_id\r\n JOIN national_team AS T4 ON T4.team_id = T2.team_id\r\n WHERE T2.goal = 'true' and T3.Year = 2022 and T4.teamname ilike '%France'\r\n GROUP BY T1.player_name\r\n ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 278,
+    "question": "show me the coach of cristiano ronaldo ?",
+    "query": "SELECT DISTINCT T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN player AS T2 ON T3.player_id = T2.player_id WHERE T2.player_name like '%Cristiano Ronaldo%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 279,
+    "question": "Show me the goals scored and the year from all world cups ordered by goals scored descending",
+    "query": "select t1.goals_scored, t1.year from world_cup as t1 order by t1.goals_scored desc;",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 288,
+    "question": "Show me the teamnames, the goals and the year of every match played by Netherlands",
+    "query": "select t2.teamname, t1.home_team_goals, t1.year\n from match as t1\n join national_team as t2 on t1.away_team_id = t2.team_id\n where t2.teamname = 'Netherlands'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 299,
+    "question": "Show player roles",
+    "query": "SELECT T2.teamname, T1.player_name, T3.position\r\n FROM player AS T1\r\n JOIN player_fact AS T3 ON T1.player_id = T3.player_id\r\n JOIN national_team AS T2 ON T3.team_id = T2.team_id\r\n WHERE T2.year = 2022\r\n ORDER BY T2.teamname",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 302,
+    "question": "Show results of the matches of France",
+    "query": " SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T3.year\n FROM national_team AS T1\n                      JOIN match AS T2 on T1.team_id = T2.away_team_id\n  JOIN national_team AS T3 ON T3.team_id = T2.home_team_id\n WHERE T1.teamname = 'France' or T3.teamname = 'France'\n  ORDER BY T3.year DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 304,
+    "question": "Show the clubs of players from Qatar",
+    "query": "SELECT DISTINCT T2.player_name, T1.club_team_name, T1.start_year,T1.end_year\r\n FROM player_club_team AS T1\r\n JOIN player AS T2 ON T1.player_id = T2.player_id\r\n join player_fact AS T3 on T3.player_id = T2.player_id\r\n join national_team AS T4 on T3.team_id = T4.team_id\r\n WHERE T4.teamname ilike '%Qatar%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 305,
+    "question": "Show the goals of Messi by year and minute",
+    "query": "select m.year, mf.minute\n from player as p\n join match_fact as mf on p.player_id = mf.player_id\n join match as m on m.match_id = mf.match_id\n where mf.goal = 'true' and p.player_name ilike '%MESSI%'\n order by m.year",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 310,
+    "question": "Show the names and number of goals that each player scored",
+    "query": "select p.player_name, count(*)\r\n from player as p\r\n join match_fact as mf on p.player_id = mf.player_id\r\n where mf.goal = 'true'\r\n group by p.player_name",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 312,
+    "question": "Show the names of all clubs",
+    "query": "SELECT T1.club_name FROM club AS T1",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 320,
+    "question": "Show the number of goals of Shakiri",
+    "query": "SELECT T3.year, count(*)\n FROM match_fact AS T1\n JOIN player AS T2 ON T1.player_id = T2.player_id\n JOIN match AS T3 on T1.match_id = T3.match_id\n WHERE T1.goal = 'true' and T2.player_name ilike '%Shaqiri%'\n GROUP BY T3.year",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 332,
+    "question": "Show the results of all matches from France in 2018",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T3.teamname = 'France' and T3.year = 2018\nUNION\nSELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'France' and T3.year = 2018",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 333,
+    "question": "Show the results of Brazil against Germany",
+    "query": "SELECT T1.teamname, T2.home_team_goals FROM national_team AS T1\n                                    JOIN match as T2 on T1.team_id = T2.home_team_id\n                                    JOIN national_team as T3 on T3.team_id = T2.away_team_id\n                                    WHERE T3.teamname = 'Brazil' and T1.teamname = 'Germany'\n                  UNION\n                  SELECT T3.teamname, T2.away_team_goals FROM national_team AS T1\n                                    JOIN match as T2 on T1.team_id = T2.home_team_id\n                                    JOIN national_team as T3 on T3.team_id = T2.away_team_id\n                                    WHERE T3.teamname = 'Germany' and T1.teamname = 'Brazil'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 334,
+    "question": "Show the results of Brazil in 2018",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, t2.stage\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE (T1.teamname = 'Brazil' OR T3.teamname = 'Brazil') and T2.year = 2018 ORDER BY t2.year DESC , T2.round_id DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 337,
+    "question": "Show the results of Germany vs. Japan",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Japan' AND T3.teamname = 'Germany' OR T3.teamname = 'Japan' AND T1.teamname = 'Germany'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 338,
+    "question": "Show the results of matches between Brazil and Germany",
+    "query": "SELECT T1.teamname, T2.home_team_goals FROM national_team AS T1\n                                                      JOIN match as T2 on T1.team_id = T2.home_team_id\n                                                      JOIN national_team as T3 on T3.team_id = T2.away_team_id\n                                                      WHERE T3.teamname = 'Brazil' and T1.teamname = 'Germany'\n                                    UNION\n                                    SELECT T3.teamname, T2.away_team_goals FROM national_team AS T1\n                                                      JOIN match as T2 on T1.team_id = T2.home_team_id\n                                                      JOIN national_team as T3 on T3.team_id = T2.away_team_id\n                                                      WHERE T3.teamname = 'Germany' and T1.teamname = 'Brazil'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 350,
+    "question": "Show the results of USA against Wales",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'United States' AND T3.teamname = 'Wales' OR T3.teamname = 'United States' AND T1.teamname = 'Wales'\n",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 358,
+    "question": "Shows the edition of the world cup with fewer spectators",
+    "query": "SELECT year, venue, attendance\r\n FROM world_cup WHERE attendance = ( SELECT min(attendance) FROM world_cup )",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 359,
+    "question": "SPAIN COACH",
+    "query": "SELECT * FROM player_fact AS T3 JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname ilike '%SPAIN COACH%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 362,
+    "question": "What are home team against England in 2002",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\n WHERE T3.teamname = 'England' and T2.year = 2002;",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 363,
+    "question": "What are the different clubs of the World Cup winners of 2018 and 2014?",
+    "query": "SELECT DISTINCT T1.club_name\n FROM club AS T1\n JOIN player_club_team AS T5\n ON T1.club_id = T5.club_id\n JOIN player AS T6\n ON T5.player_id = T6.player_id\n JOIN player_fact AS T7\n ON T6.player_id = T7.player_id\n JOIN national_team AS T2\n ON T7.team_id = T2.team_id\n JOIN world_cup AS T3\n ON T2.team_id = T3.winner\n WHERE T3.year = 2014\n AND T3.year BETWEEN T5.start_year AND T5.end_year\n UNION\n SELECT DISTINCT T1.club_name\n FROM club AS T1\n JOIN player_club_team AS T5\n ON T1.club_id = T5.club_id\n JOIN player AS T6\n ON T5.player_id = T6.player_id\n JOIN player_fact AS T7\n ON T6.player_id = T7.player_id\n JOIN national_team AS T2\n ON T7.team_id = T2.team_id\n JOIN world_cup AS T3\n ON T2.team_id = T3.winner\n WHERE T3.year = 2018\n AND T3.year BETWEEN T5.start_year AND T5.end_year",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 365,
+    "question": "What are the Names of all the Coaches of Japan?",
+    "query": "SELECT DISTINCT T1.COACH_NAME \r\n FROM COACH AS T1\r\n JOIN PLAYER_FACT AS T3 ON T1.COACH_ID = T3.COACH_ID\r\n JOIN NATIONAL_TEAM AS T2 ON T3.TEAM_ID = T2.TEAM_ID\r\n WHERE T2.TEAMNAME = 'Japan'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 366,
+    "question": "What are the names of coaches with the country code RUS?",
+    "query": "select c.coach_name from coach as c where c.country_code = 'RUS';",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 368,
+    "question": "What are the names of players who play for Switzerland and have the nickname Khan?",
+    "query": "SELECT T1.player_name FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname ilike '%Zulqarnain%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 372,
+    "question": "What are the results of all matches between Switzerland and Spain?",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Switzerland' AND T3.teamname = 'Spain' OR T3.teamname = 'Switzerland' AND T1.teamname = 'Spain'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 373,
+    "question": "What are the results of Argentina vs. Brazil?",
+    "query": "SELECT T1.teamname, T2.home_team_goals FROM national_team AS T1\n                  JOIN match as T2 on T1.team_id = T2.home_team_id\n                  JOIN national_team as T3 on T3.team_id = T2.away_team_id\n                  WHERE T3.teamname = 'Brazil' and T1.teamname = 'Argentina'\nUNION ALL\nSELECT T3.teamname, T2.away_team_goals FROM national_team AS T1\n                  JOIN match as T2 on T1.team_id = T2.home_team_id\n                  JOIN national_team as T3 on T3.team_id = T2.away_team_id\n                  WHERE T3.teamname = 'Argentina' and T1.teamname = 'Brazil'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 375,
+    "question": "What are the stadiums where the semi-finals of the 2002 tournament were played?",
+    "query": "select distinct stadium.stadium_name\r\n from stadium join match on stadium.stadium_id = match.stadium_id\r\n where match.stage = 'Semi-finals' and match.year = 2002;",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 376,
+    "question": "What are the years of matches between Switzerland and Brazil",
+    "query": "SELECT T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Switzerland' AND T3.teamname = 'Brazil'\nUNION\nSELECT T3.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Brazil' AND T3.teamname = 'Switzerland'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 380,
+    "question": "What countries played against Brazil in World Cup 2014?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T3.teamname = 'Brazil' and T3.year = 2014\nUNION\nSELECT T3.teamname\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Brazil' and T3.year = 2014",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 382,
+    "question": "What english player scored the most own goals",
+    "query": "SELECT T3.year, T1.player_name, count(*)\r\n FROM player AS T1\r\n JOIN match_fact AS T2 ON T1.player_id = T2.player_id\r\n Join match AS T3 ON T3.match_id = T2.match_id\r\n JOIN national_team AS T4 ON T4.team_id = T2.team_id\r\n WHERE T2.own_goal = 'true' and T4.teamname ilike '%England'\r\n GROUP BY T1.player_name,T3.year\r\n ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 385,
+    "question": "What is the coach of Spain",
+    "query": "SELECT coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Spain' ORDER BY T2.year DESC LIMIT 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 386,
+    "question": "What is the coach of Spain 2022",
+    "query": "SELECT distinct T1.coach_name\r\n FROM coach AS T1 \r\n JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id \r\n JOIN national_team AS T2 ON T3.team_id = T2.team_id \r\n WHERE T2.teamname = 'Spain' and T2.year = 2022",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 390,
+    "question": "what is the most popular shirt number?",
+    "query": "SELECT T1.shirt_number FROM player_fact AS T1 GROUP BY T1.shirt_number ORDER BY count(*) DESC LIMIT 1",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 393,
+    "question": "What is the name of the player that had the most own goals?",
+    "query": "select p.player_name, count(p.player_name) from player as p\r\n join match_fact as mf on p.player_id = mf.player_id\r\n where mf.own_goal = 'true'\r\n group by p.player_name\r\n order by count(p.player_name) desc limit 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 401,
+    "question": "What is the result of the final of 2006",
+    "query": "SELECT T1.teamname, T2.home_team_goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN match_fact AS T3 ON T2.match_id = T3.match_id\nWHERE T2.stage = 'Final' AND T2.year = 2006\nUNION\nSELECT T1.teamname, T2.away_team_goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.away_team_id = T1.team_id\n    JOIN match_fact AS T3 ON T2.match_id = T3.match_id\nWHERE T2.stage = 'Final' AND T2.year = 2006",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 404,
+    "question": "What is the stadium where the last final was played?",
+    "query": "select s.stadium_name\r\n from stadium as s\r\n join match as m on s.stadium_id = m.stadium_id\r\n where m.stage = 'Final'\r\n order by m.year desc\r\n limit 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 409,
+    "question": "what nation won the most worldcups?",
+    "query": "SELECT T1.teamname, count(*)\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nGROUP BY T1.teamname ORDER BY count(*) DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 411,
+    "question": "What player scored the most goals in the 2014 world cup?",
+    "query": "SELECT p.player_name, COUNT(DISTINCT mf.match_id)\n FROM match_fact AS mf\n JOIN match AS m ON m.match_id = mf.match_id\n JOIN player AS p ON p.player_id = mf.player_id\n WHERE m.year = 2014\n AND mf.goal = 'true'\n GROUP BY p.player_name\n ORDER BY COUNT(DISTINCT mf.match_id) DESC\n LIMIT 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 413,
+    "question": "What players received a red card in the 2018 world cup?",
+    "query": "SELECT DISTINCT p.player_name \r\n FROM match_fact AS mf \r\n JOIN player AS p ON p.player_id = mf.player_id \r\n JOIN match AS m ON m.match_id = mf.match_id \r\n WHERE mf.red_card = 'true' \r\n AND m.year = 2018",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 415,
+    "question": "What position did Xherdan Shaqiri had in 2014?",
+    "query": "SELECT T2.position\r\n from player as T1\r\n JOIN player_fact AS T2 on T1.player_id = T2.player_id\r\n where T1.player_name ilike '%Shaqiri%' and T2.year_id = 2014",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 418,
+    "question": "what stadium has the highest capacity in Qatar",
+    "query": "SELECT T1.stadium_name, T1.capacity FROM stadium AS T1\r\n WHERE T1.country = 'Qatar' \r\n ORDER BY T1.capacity DESC LIMIT 1",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 421,
+    "question": "What team has the most final appearances without winning the world cup?",
+    "query": "SELECT T1.teamname, Count(*) from national_team As T1\n JOIN world_cup AS T2 ON T1.team_id = T2.runner_up\n GROUP BY T1.teamname\n ORDER BY Count(*) DESC\n LIMIT 1\n",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 423,
+    "question": "What team lost with the most goals received in any match in the 2014 world cup?",
+    "query": "SELECT teamname FROM(\nSELECT T1.teamname, T2.away_team_goals\n FROM national_team AS T1\n JOIN match AS T2 ON T2.home_team_id = T1.team_id\n WHERE T2.year = 2014 AND T2.did_home_win = 'false'\n UNION\nSELECT T1.teamname, T2.home_team_goals\n FROM national_team AS T1\n JOIN match AS T2 ON T1.team_id = T2.away_team_id\n WHERE T2.year = 2014 AND T2.did_home_win = 'true' ) as t\nORDER BY t.away_team_goals DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 432,
+    "question": "What was the highest attendance ever at a match?",
+    "query": "SELECT max(T1.attendance) FROM match AS T1",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 439,
+    "question": "what were the opponents of switzerland at the worldcup 2018",
+    "query": "SELECT T1.teamname, T2.away_team_goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T3.teamname = 'Switzerland' and T2.year = 2018\nUNION\nSELECT T3.teamname, T2.home_team_goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Switzerland' and T2.year = 2018",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 440,
+    "question": "What year has the Switzerland Team scored the most goals?",
+    "query": "select t1.year, t1.goals\r\n from national_team as t1\r\n where t1.teamname = 'Switzerland'\r\n order by goals desc limit 1;",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 441,
+    "question": "whats the highest amount of goals switzerland has scored in a match in each year",
+    "query": "SELECT max(t.home_team_goals), t.year\n    FROM (\nSELECT m.home_team_goals, m.year\n FROM match as m\n JOIN national_team as n ON n.team_id = m.home_team_id\n WHERE n.teamname = 'Switzerland'\nUNION\nSELECT m.away_team_goals, m.year\n FROM match as m\n JOIN national_team as n ON n.team_id = m.away_team_id\n WHERE n.teamname = 'Switzerland') as t\nGROUP BY t.year\nORDER BY t.year",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 444,
+    "question": "When did Brazil win?",
+    "query": "SELECT DISTINCT T1.YEAR\n FROM MATCH AS T1\n JOIN NATIONAL_TEAM AS T2 ON T1.home_team_id = T2.TEAM_ID\n JOIN WORLD_CUP AS T3 ON T3.winner = T2.TEAM_ID\n WHERE T2.TEAMNAME = 'Brazil'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 446,
+    "question": "When did England play in the world cup?",
+    "query": "SELECT DISTINCT T2.year\n FROM national_team AS T1\n JOIN match AS T2 ON T1.team_id = T2.home_team_id\n WHERE T1.teamname = 'England'\n ORDER BY T2.year DESC",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 454,
+    "question": "When did Ronaldo play",
+    "query": "SELECT distinct T1.year FROM match AS T1\n JOIN match_fact AS T3 ON T1.match_id = T3.match_id\n JOIN player AS T2 ON T3.player_id = T2.player_id\n WHERE T2.player_name ilike '%Ronaldo%'\n order by year desc",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 456,
+    "question": "when was austria champion",
+    "query": "SELECT * FROM national_team AS T1 JOIN world_cup AS T2 ON T2.winner = T1.team_id\nWHERE t1.teamname = 'Austria'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 459,
+    "question": "When was the first world cup match played on European soil?",
+    "query": "select m.year\r\n from stadium as s\r\n join match as m on s.stadium_id = m.stadium_id\r\n where s.continent = 'Europe'\r\n order by m.year\r\n limit 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 461,
+    "question": "When was the first world cup?",
+    "query": "SELECT min(T1.year) FROM world_cup AS T1",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 462,
+    "question": "when was the first worldcup?",
+    "query": "SELECT min( T1.year) FROM world_cup AS T1",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 469,
+    "question": "where does maradonna play",
+    "query": "SELECT DISTINCT T1.country FROM stadium AS T1 WHERE T1.country IN (SELECT T22.country FROM stadium AS T22\n                      JOIN match AS T24 ON T22.stadium_id = T24.stadium_id\n                      JOIN match_fact AS T25 ON T24.match_id = T25.match_id\n                      JOIN player AS T23 ON T25.player_id = T23.player_id WHERE T23.player_name ilike '%Maradona%')",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 472,
+    "question": "Where was the first world cup?",
+    "query": "SELECT T1.country, T2.year FROM stadium AS T1 JOIN match AS T2 ON T1.stadium_id = T2.stadium_id ORDER BY T2.year ASC LIMIT 1",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 475,
+    "question": "Where was the world cup in 2018",
+    "query": "SELECT venue FROM world_cup WHERE world_cup.year = 2018;",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 478,
+    "question": "Which Club has the most players?",
+    "query": "SELECT T1.club_team_name FROM player_club_team AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id GROUP BY T1.club_team_name ORDER BY count(*) DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 479,
+    "question": "which club won the most matches?",
+    "query": "SELECT t.club_team_name\nFROM (\nSELECT T1.club_team_name\nFROM player_club_team AS T1\n    JOIN player AS T5 ON T1.player_id = T5.player_id\n    JOIN match_fact AS T6 ON T5.player_id = T6.player_id\n    JOIN match AS T3 ON T6.match_id = T3.match_id\n    WHERE T3.did_home_win = 'true'\nUNION ALL\nSELECT T1.club_team_name\nFROM player_club_team AS T1\n    JOIN player AS T5 ON T1.player_id = T5.player_id\n    JOIN match_fact AS T6 ON T5.player_id = T6.player_id\n    JOIN match AS T3 ON T6.match_id = T3.match_id\nWHERE T3.did_home_win = 'false' and T3.is_draw = 'false') as t\nGROUP BY t.club_team_name\nORDER BY count(*) DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 480,
+    "question": "which club won with the most red cards?",
+    "query": "SELECT T1.club_team_name, count(*)\nFROM player_club_team AS T1\n    JOIN player AS T5 ON T1.player_id = T5.player_id\n    JOIN match_fact AS T4 ON T5.player_id = T4.player_id\n    JOIN match AS T6 ON T4.match_id = T6.match_id\nWHERE T4.red_card = 'true' GROUP BY T1.club_team_name ORDER BY count(*) DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 488,
+    "question": "Which country hosted the first world cup?",
+    "query": "SELECT T1.country, T2.year\r\n FROM stadium AS T1\r\n JOIN match AS T2 ON T1.stadium_id = T2.stadium_id\r\n ORDER BY T2.year LIMIT 1",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 489,
+    "question": "Which distinct players have gotten at least once a second yellow card at the world cup? Return the name.",
+    "query": "select distinct t1.player_name\r\n from player as t1\r\n join match_fact as t2 on t2.player_id = t1.player_id\r\n where t2.second_yellow_card = 'true';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 490,
+    "question": "Which distinct players have gotten at least one red card at the world cup? Return the name.",
+    "query": "select distinct t1.player_name\r\n from player as t1\r\n join match_fact as t2 on t2.player_id = t1.player_id\r\n where t2.red_card = 'true';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 504,
+    "question": "Which nation won the most worldcups and how often?",
+    "query": "SELECT T1.teamname, count(*) FROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\n GROUP BY T1.teamname ORDER BY count(*) DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 509,
+    "question": "Which nations won the worldcup more then 3 times?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nGROUP BY T1.teamname HAVING count(*) > 3",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 515,
+    "question": "Which player has scored most goals?",
+    "query": "SELECT T1.player_name, count(*) FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.goal = 'true' GROUP BY T1.player_name ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 523,
+    "question": "which player shot the most goals in a single worldcup?",
+    "query": "SELECT T3.year, T1.player_name, count(*)\n FROM player AS T1\n JOIN match_fact AS T2 ON T1.player_id = T2.player_id\n JOIN match as T3 On T3.match_id = T2.match_id\n WHERE T2.goal = 'True'\n GROUP BY T1.player_name, T3.year\n ORDER BY count(*) DESC\n LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 526,
+    "question": "Which players are playing for Germany in 2022?",
+    "query": "SELECT DISTINCT T1.player_name FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Germany' and T2.year = 2022",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 527,
+    "question": "Which players have been both players and coaches in world cups?",
+    "query": "SELECT T1.player_name from player as T1 join coach AS T2 on T1.player_name = T2.coach_name",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 532,
+    "question": "Which players play for Switzerland in year 2022",
+    "query": "SELECT T1.player_name FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Switzerland' and T2.year = 2022",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 535,
+    "question": "which players played for switzerland in 2018?",
+    "query": "SELECT DISTINCT T1.player_name FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Switzerland' and T2.year = 2018",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 540,
+    "question": "Which players started for the hungarian national team in the final of 1954? Return the names",
+    "query": "SELECT distinct player_name from player join player_fact as pf on player.player_id = pf.player_id\n    join national_team as nt on pf.team_id = nt.team_id\n    join match_fact as mf on player.player_id = mf.player_id\n    join match as m on mf.match_id = m.match_id where\n    nt.teamname = 'Hungary' and nt.year = 1954 and m.stage = 'Final' and mf.line_up = 'true';",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 550,
+    "question": "which stadium has the most capacity in 2018?",
+    "query": "SELECT T1.stadium_name FROM stadium AS T1 JOIN match AS T2 ON T1.stadium_id = T2.stadium_id WHERE T2.year = 2018 ORDER BY T1.capacity DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 557,
+    "question": "which team did Klose play for?",
+    "query": "SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN player_fact AS T3 ON T1.team_id = T3.team_id JOIN player AS T2 ON T3.player_id = T2.player_id WHERE T2.player_name like '%Klose%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 561,
+    "question": "Which team has scored the most goals in the 2002 world cup",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN match AS T2 on T2.home_team_id = T1.team_id\nWHERE T2.year = 2002 ORDER BY T1.goals DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 564,
+    "question": "Which team has to most runner up titles in all world cups?",
+    "query": "SELECT teamname, COUNT(*) FROM world_cup AS w\n JOIN national_team AS n ON w.runner_up = n.team_id\n GROUP BY n.teamname\n ORDER BY COUNT(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 566,
+    "question": "Which team has won the most World Cups?",
+    "query": "SELECT T1.teamname, count(*)\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nGROUP BY T1.teamname\nORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 571,
+    "question": "Which team names that played in the world cup 1966?",
+    "query": "select t1.teamname from national_team as t1 where t1.year = 1996;",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 573,
+    "question": "Which Team palyed the most games in 2022?",
+    "query": "SELECT COUNT(*) FROM (\nSELECT T1.teamname, T2.match_id\n FROM national_team AS T1\n JOIN match AS T2 ON T2.home_team_id = T1.team_id\n WHERE T2.year = 2022\n UNION\n SELECT T1.teamname, T2.match_id\n FROM national_team AS T1\n JOIN match AS T2 ON T2.away_team_id = T1.team_id\n WHERE T2.year = 2022) as t\n GROUP BY t.teamname\n ORDER BY count(*) DESC\n LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 575,
+    "question": "Which team played the most worldcups?",
+    "query": "SELECT teamname, count(*) FROM national_team\nGROUP BY teamname ORDER BY count(*) DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 579,
+    "question": "Which team scored the most goals in a match?",
+    "query": "SELECT max(t.home_team_goals), t.teamname\n    FROM (\nSELECT m.home_team_goals, n.teamname\n FROM match as m\n JOIN national_team as n ON n.team_id = m.home_team_id\nUNION\nSELECT m.away_team_goals, n.teamname\n FROM match as m\n JOIN national_team as n ON n.team_id = m.away_team_id) as t\nGROUP BY t.teamname\nORDER BY max(t.home_team_goals) DESC",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 582,
+    "question": "Which team was in the final of 2006",
+    "query": "SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN match AS T2 on T1.team_id = T2.away_team_id WHERE T2.stage = 'Final' and T1.year = 2006 UNION SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN match AS T2 on T1.team_id = T2.home_team_id WHERE T2.stage = 'Final' and T1.year = 2006",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 583,
+    "question": "Which team was runner-up the most? Return the team name and the count.",
+    "query": "select nt.teamname, count(*) from national_team as nt\n join world_cup as wc\n on nt.team_id = wc.runner_up\n group by team_initials, teamname order by count(*) DESC;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 590,
+    "question": "Which team won most world cups?",
+    "query": "SELECT teamname, COUNT(*) FROM world_cup AS w\n JOIN national_team AS n ON w.winner = n.team_id\n GROUP BY n.teamname\n ORDER BY COUNT(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 596,
+    "question": "which teams are there",
+    "query": "SELECT DISTINCT T1.teamname FROM national_team AS T1",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 600,
+    "question": "Which teams Played against switzerland in 2018?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\n WHERE T3.teamname = 'Switzerland' and T2.year = 2018\nUNION\nSELECT T3.teamname\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\n WHERE T1.teamname = 'Switzerland' and T2.year = 2018",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 602,
+    "question": "which teams played Final in 2018?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\nWHERE T2.stage = 'Final' and T2.year = 2018\nUNION\nSELECT T1.teamname\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.away_team_id\nWHERE T2.stage = 'Final' and T2.year = 2018",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 610,
+    "question": "Which teams won against Germany and when?",
+    "query": "SELECT T3.teamname, T2.year\nFROM national_team AS T1\n JOIN match AS T2 ON T2.home_team_id = T1.team_id\n JOIN national_team AS T3 ON T3.team_id = T2.away_team_id\n JOIN world_cup AS T4 ON T4.winner = T3.team_id\n WHERE T1.teamname = 'Germany'\nUNION\nSELECT T3.teamname, T2.year\nFROM national_team AS T1\n JOIN match AS T2 ON T2.away_team_id = T1.team_id\n JOIN national_team AS T3 ON T3.team_id = T2.home_team_id\n JOIN world_cup AS T4 ON T4.winner = T3.team_id\n WHERE T1.teamname = 'Germany'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 612,
+    "question": "Which where the countrys and their role that played against russia in World Cup 2018",
+    "query": "SELECT T3.teamname, 'away'\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T2.away_team_id = T3.team_id\nWHERE T1.teamname = 'Russia' and T2.year = 2018\nUNION\nSELECT T3.teamname, 'home'\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.away_team_id\n    JOIN national_team AS T3 on T2.home_team_id = T3.team_id\nWHERE T1.teamname = 'Russia' and T2.year = 2018",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 613,
+    "question": "Which world cup had the biggest attendance? Return the year, venue and attendance",
+    "query": "SELECT year, venue, attendance from world_cup order by attendance desc limit 1;",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 618,
+    "question": "Who coached the Grasshopper Club Z\u00fcrich",
+    "query": "SELECT T1.player_name FROM player AS T1 JOIN player_club_team AS T3 ON T1.player_id = T3.player_id JOIN club AS T2 ON T3.club_id = T2.club_id WHERE T2.club_name ilike '%Grasshopper Club Z\u00fcrich%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 622,
+    "question": "who has the most wins",
+    "query": "SELECT T1.teamname, count(*) FROM national_team AS T1 GROUP BY T1.teamname ORDER BY count(*) DESC LIMIT 1",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 627,
+    "question": "who is the coach of belgiumin 2018?",
+    "query": "SELECT DISTINCT T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Belgium' and T2.year = 2018",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 628,
+    "question": "Who is the coach of Cristiano Ronaldo in 2022 ?",
+    "query": "SELECT T1.coach_name FROM coach AS T1 JOIN player_fact AS T4 ON T1.coach_id = T4.coach_id JOIN player AS T2 ON T4.player_id = T2.player_id JOIN national_team AS T3 ON T4.team_id = T3.team_id WHERE T2.player_name = 'Cristiano Ronaldo' and T3.year = 2022",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 633,
+    "question": "who is the coach of Germany in 2006?",
+    "query": "SELECT DISTINCT T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Germany' and T2.year = 2006",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 635,
+    "question": "Who is the coach of germany in 2022?",
+    "query": "SELECT DISTINCT T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Germany' and T2.year = 2022",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 643,
+    "question": "who is the first World Cup winner?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nORDER BY T2.year ASC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 650,
+    "question": "Who lost to France in the world cup 2018 finals",
+    "query": "SELECT T1.teamname\nFROM national_team as T1\nJOIN world_cup AS T3 on T1.team_id = T3.runner_up\nWHERE T1.team_id in (\nSELECT T2.home_team_id\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.away_team_id\nWHERE T1.teamname = 'France' and T2.year = 2018\nUNION\nSELECT T2.away_team_id\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\nWHERE T1.teamname = 'France' and T2.year = 2018)",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 652,
+    "question": "Who played for Brazil in 1990?",
+    "query": "SELECT T1.player_name\r\n FROM player AS T1\r\n JOIN player_fact AS T3 ON T1.player_id = T3.player_id\r\n JOIN national_team AS T2 ON T3.team_id = T2.team_id\r\n WHERE T2.teamname = 'Brazil' and T2.year = 1990",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 658,
+    "question": "Who plays in Serie A?",
+    "query": "SELECT T1.player_name FROM player AS T1 JOIN player_club_team AS T3 ON T1.player_id = T3.player_id JOIN club AS T4 ON T3.club_id = T4.club_id JOIN club_league_history AS T5 ON T4.club_id = T5.club_id JOIN league AS T2 ON T5.league_id = T2.league_id WHERE T2.league_name ilike '%Serie A%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 662,
+    "question": "Who scored for the Switzerland national team in the world cup 2014?",
+    "query": "SELECT DISTINCT T2.player_name\n FROM national_team AS T1\n JOIN player_fact AS T4 ON T1.team_id = T4.team_id\n JOIN player AS T2 ON T4.player_id = T2.player_id\n JOIN match_fact AS T5 ON T2.player_id = T5.player_id\n JOIN match AS T3 ON T5.match_id = T3.match_id\n WHERE T1.teamname = 'Switzerland' and T3.year = 2014 and T5.goal = 'true'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 663,
+    "question": "Who scored in a world cup final in the last 10 years?",
+    "query": "SELECT distinct T1.player_name from player as T1\njoin match_fact as T2 on T1.player_id = T2.player_id\njoin Match as T3 on T2.match_id = T3.match_id\nWHERE T3.stage = 'Final' AND T3.year BETWEEN 2014 and 2022 and T2.goal = 'true'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 670,
+    "question": "who scored the winning goal in 2014 final",
+    "query": "SELECT DISTINCT T1.teamname, T2.player_name\nFROM national_team AS T1\n    JOIN player_fact AS T5 ON T1.team_id = T5.team_id\n    JOIN player AS T2 ON T5.player_id = T2.player_id\n    JOIN match_fact AS T4 ON T2.player_id = T4.player_id\n    JOIN match AS T3 ON T4.match_id = T3.match_id\nWHERE T4.goal = 'true' and T3.year = 2014 and T3.stage = 'Final'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 673,
+    "question": "Who was fifth in the last worldcup?\r\n Who was fourth in the last worldcup?",
+    "query": "SELECT T1.teamname, T2.year\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.fourth\nORDER BY T2.year DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 675,
+    "question": "Who was fourth in 2014?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.fourth WHERE T2.year = 2014 ",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 676,
+    "question": "Who was fourth in the last world cup?",
+    "query": "select nt.teamname, wcr.year\n from national_team as nt\n join world_cup as wcr on nt.team_id = wcr.fourth\n order by wcr.year DESC LIMIT 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 684,
+    "question": "who was the coach for spain in 2014?",
+    "query": "SELECT DISTINCT T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Spain' and T2.year = 2014",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 687,
+    "question": "Who was the coach of Spain in 2018?",
+    "query": "SELECT DISTINCT T1.COACH_NAME\r\n FROM COACH AS T1\r\n JOIN PLAYER_FACT AS T3 ON T1.COACH_ID = T3.COACH_ID\r\n JOIN NATIONAL_TEAM AS T2 ON T3.TEAM_ID = T2.TEAM_ID\r\n WHERE T2.TEAMNAME = 'Spain'\r\n AND T2.YEAR = 2018",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 688,
+    "question": "Who was the coach of team france in the 2010 world cup?",
+    "query": "SELECT T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'France' and T2.year = 2010",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 695,
+    "question": "Who was winner in 1930",
+    "query": "SELECT T1.teamname FROM national_team AS T1 JOIN world_cup AS T2 ON T1.team_id = T2.winner WHERE T2.year = 1930",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 701,
+    "question": "who won in 2002",
+    "query": "SELECT T1.teamname FROM national_team AS T1 JOIN world_cup AS T2 ON T1.team_id = T2.winner WHERE T2.year = 2002 ",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 703,
+    "question": "Who won in 2010?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nWHERE T2.year = 2010",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 704,
+    "question": "Who won in 2014?",
+    "query": "SELECT T1.teamname FROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nWHERE T2.year = 2014",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 705,
+    "question": "who won in 2018",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nWHERE T2.year = 2018",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 710,
+    "question": "Who won the first world cup?",
+    "query": "SELECT T1.teamname, T2.year\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nORDER BY T2.year LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 714,
+    "question": "who won the most medals",
+    "query": "SELECT T1.teamname, count(*) FROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner GROUP BY T1.teamname ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 715,
+    "question": "Who won the most world cups and how many?",
+    "query": "SELECT count(*), T2.teamname FROM world_cup AS T1\n JOIN national_team AS T2 ON T1.winner = T2.team_id\nGROUP BY teamname ORDER BY count(*) desc limit 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 716,
+    "question": "Who won the most world-cups?",
+    "query": "select nt.teamname, count(*)\n from world_cup as wc\n join national_team as nt on nt.team_id = wc.winner\n GROUP BY nt.teamname\n ORDER BY count(*) DESC LIMIT 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 721,
+    "question": "Who won the World Cup in 2012",
+    "query": "SELECT T1.teamname\n FROM national_team AS T1\n JOIN world_cup AS T2 ON T1.team_id = T2.winner\n WHERE T2.year = 2012",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 724,
+    "question": "Who won the worldcup in 2006?",
+    "query": "SELECT T1.teamname FROM national_team AS T1 JOIN world_cup AS T2 ON T1.team_id = T2.winner WHERE T2.year = 2006",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 725,
+    "question": "Who won the worldcup in 2008?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nWHERE T2.year = 2008",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 735,
+    "question": "where did maradonna play",
+    "query": "SELECT DISTINCT T1.country FROM stadium AS T1 WHERE T1.country IN (SELECT T22.country FROM stadium AS T22\n    JOIN match AS T24 ON T22.stadium_id = T24.stadium_id\n    JOIN match_fact AS T25 ON T24.match_id = T25.match_id\n    JOIN player AS T23 ON T25.player_id = T23.player_id WHERE T23.player_name ilike '%Maradona%')",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 736,
+    "question": "Where did maradona play?",
+    "query": "SELECT distinct T1.country\n FROM stadium AS T1\n JOIN match AS T3 ON T1.stadium_id = T3.stadium_id\n JOIN match_fact AS T4 ON T3.match_id = T4.match_id\n JOIN player AS T2 ON T4.player_id = T2.player_id\n WHERE T2.player_name ilike '%Maradona%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 738,
+    "question": "how the names of players from brazil 2022",
+    "query": "SELECT T1.player_name FROM player AS T1 JOIN player_fact AS T3 ON T1.player_id = T3.player_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Brazil' and T2.year = 2022",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 742,
+    "question": "How many red cards at world cup 2018?",
+    "query": "SELECT count(*) from match_fact join match on match_fact.match_id = match.match_id where match.year = 2018 and match_fact.red_card = 'true' ;",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 751,
+    "question": "How many red cards at the 2018 world cup",
+    "query": "SELECT count(*) from match_fact join match on match_fact.match_id = match.match_id where match.year = 2018 and match_fact.red_card = 'true' ;",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 756,
+    "question": "who has the most win",
+    "query": "SELECT T1.teamname, count(*) FROM national_team AS T1 GROUP BY T1.teamname ORDER BY count(*) DESC LIMIT 1",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 757,
+    "question": "Which team won most world cup",
+    "query": "SELECT T1.teamname, count(*)\nFROM national_team AS T1\n    JOIN world_cup AS T3 ON T1.team_id = T3.winner\nGROUP BY T1.teamname ORDER BY count(*) DESC LIMIT 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 764,
+    "question": "Which players scored the most goals?",
+    "query": "SELECT T1.player_name, count(*) FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.goal = 'true' GROUP BY T1.player_name ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 767,
+    "question": "Which team scored the most goals ?",
+    "query": "SELECT T1.player_name, count(*) FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.goal = 'true' GROUP BY T1.player_name ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 769,
+    "question": "Who has scored the most goals?",
+    "query": "SELECT T1.player_name, count(*) FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.goal = 'true' GROUP BY T1.player_name ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 782,
+    "question": "which player scored the most goals in 2018",
+    "query": "SELECT T1.player_name, count(*)\nFROM player AS T1\n    JOIN match_fact AS T2 ON T1.player_id = T2.player_id\n    JOIN match AS T4 ON T2.match_id = T4.match_id\n    JOIN national_team AS T3 ON T3.team_id = T2.team_id\nWHERE T2.goal = 'true' and T3.year = 2018\n GROUP BY T1.player_name ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 788,
+    "question": "Who was the coach of Spain",
+    "query": "SELECT coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Spain' ORDER BY T2.year DESC LIMIT 1;",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 789,
+    "question": "What is the coach of Spain of 2022",
+    "query": "SELECT distinct T1.coach_name\n FROM coach AS T1 \n JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id \n JOIN national_team AS T2 ON T3.team_id = T2.team_id \n WHERE T2.teamname = 'Spain' and T2.year = 2022",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 790,
+    "question": "Which team has players from FC Barcelona",
+    "query": "SELECT Distinct T1.teamname FROM national_team AS T1 JOIN player_fact AS T3 ON T1.team_id = T3.team_id JOIN player AS T4 ON T3.player_id = T4.player_id JOIN player_club_team AS T2 ON T4.player_id = T2.player_id WHERE T2.club_team_name ilike '%FC Barcelona%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 792,
+    "question": "In how many woldcups did the Italy participate in?",
+    "query": "SELECT count(*) FROM national_team AS T1 WHERE T1.teamname = 'Italy'",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 796,
+    "question": "For which national team does Ronaldo play",
+    "query": "SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN player_fact AS T3 ON T1.team_id = T3.team_id JOIN player AS T2 ON T3.player_id = T2.player_id WHERE T2.player_name ilike '%Ronaldo%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 800,
+    "question": "at which location was the world cup in 2014",
+    "query": "SELECT distinct T1.country\n FROM stadium AS T1 \n JOIN match AS T4 ON T1.stadium_id = T4.stadium_id \n JOIN world_cup AS T5 ON T4.year = T5.year \n JOIN player_fact AS T6 ON T5.year = T6.year_id \n WHERE T5.year = 2014",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 805,
+    "question": "Show the results of Japan vs. Germany",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname ilike '%Japan%' AND T3.teamname ilike '%Germany%' OR T3.teamname ilike '%Japan%' AND T1.teamname ilike '%Germany%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 808,
+    "question": "How many goals brazil scored against argentina?",
+    "query": "SELECT sum(T.away_team_goals)  FROM (SELECT T2.away_team_goals FROM national_team AS T1 JOIN match AS T2 ON T2.home_team_id = T1.team_id JOIN national_team as T3 on T2.away_team_id = T3.team_id WHERE T1.teamname = 'Argentina' AND T3.teamname = 'Brazil' UNION SELECT T2.home_team_goals FROM national_team AS T1 JOIN match AS T2 ON T2.home_team_id = T1.team_id JOIN national_team as T3 on T2.away_team_id = T3.team_id WHERE T3.teamname = 'Argentina' AND T1.teamname = 'Brazil') as T",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 809,
+    "question": "Show result of Germany vs. Japan",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Germany' AND T3.teamname = 'Japan' OR T3.teamname = 'Germany' AND T1.teamname = 'Japan'\n",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 811,
+    "question": "What is the name and the year of the first club ever founded ?",
+    "query": "SELECT club_name, found_year FROM club\n ORDER BY found_year ASC\n LIMIT 5",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 813,
+    "question": "Show me all goalkeeper",
+    "query": "SELECT DISTINCT T1.player_name, T2.year_id FROM player as T1\n JOIN player_fact AS T2 on T1.player_id = T2.player_id\n WHERE T2.position ilike 'GK'\n ORDER BY T2.year_id DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 816,
+    "question": "Name of all stadiums in Qatar and how much capacity they have, sorted from high to low",
+    "query": "SELECT T1.stadium_name, T1.capacity FROM stadium AS T1 WHERE T1.country = 'Qatar' ORDER BY T1.capacity DESC",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 822,
+    "question": "how many yellow cards were used in the match between france and germany in 2018",
+    "query": "SELECT T5.player_name,T1.teamname,T7.teamname, count(*)\nfrom  national_team as T1\nJoin match  as T3 on T1.team_id = T3.home_team_id\njoin match_fact as T4 on T3.match_id = T4.match_id\njoin player as T5 on T4.player_id = T5.player_id\nJOin national_team as T7 on T3.away_team_id = T7.team_id\nwhere T4.yellow_card = 'true' AND T3.year = 2018 AND T7.teamname ilike '%France%' and T1.teamname ilike '%Germany%'\nGROUP BY T5.player_name,T1.teamname, T7.teamname\nUNION\nSELECT T5.player_name,T1.teamname,T7.teamname, count(*)\nfrom  national_team as T1\nJoin match  as T3 on T1.team_id = T3.home_team_id\njoin match_fact as T4 on T3.match_id = T4.match_id\njoin player as T5 on T4.player_id = T5.player_id\nJOin national_team as T7 on T3.away_team_id = T7.team_id\nwhere T4.yellow_card = 'true' AND T3.year = 2018 AND T1.teamname ilike '%France%' and T7.teamname ilike '%Germany%'\nGROUP BY T5.player_name,T1.teamname, T7.teamname",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 826,
+    "question": "What is the position of Neuer",
+    "query": "SELECT DISTINCT T1.position FROM player_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T2.player_name ilike '%Neuer%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 828,
+    "question": "Stadiums in which an own goal was scored",
+    "query": "SELECT T1.stadium_name\nFROM stadium AS T1\n    JOIN match AS T3 ON T1.stadium_id = T3.stadium_id\n    JOIN match_fact AS T2 ON T3.match_id = T2.match_id\nWHERE T2.own_goal = 'true'\n",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 839,
+    "question": "What is the name and the year of the last club founded ?",
+    "query": "SELECT T1.club_name, T1.found_year FROM club AS T1 ORDER BY T1.found_year DESC LIMIT 1",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 840,
+    "question": "Who is the goalkeeper in 2018",
+    "query": "SELECT T1.player_name FROM player AS T1\n  JOIN player_fact AS T3 ON T1.player_id = T3.player_id\n  JOIN national_team AS T2 ON T3.team_id = T2.team_id\n  WHERE T2.year = 2018 and T3.position = 'GK'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 847,
+    "question": "Which Switzerland player has the shirt number 1",
+    "query": "SELECT DISTINCT T1.player_name FROM player AS T1\n  JOIN player_fact AS T2 ON T1.player_id = T2.player_id\n  JOIN national_team AS T3 on T3.team_id = T2.team_id\n  WHERE T2.shirt_number = 1 and T3.teamname ilike '%Switzerland%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 848,
+    "question": "What are the names of the players on team USA?",
+    "query": "SELECT DISTINCT T1.player_name FROM player AS T1\n  JOIN player_fact AS T3 ON T1.player_id = T3.player_id\n  JOIN national_team AS T2 ON T3.team_id = T2.team_id\n  WHERE T2.teamname = 'USA'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 850,
+    "question": "What is the name of the first club ever founded ?",
+    "query": "SELECT T1.club_name FROM club AS T1 ORDER BY T1.found_year ASC LIMIT 1",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 852,
+    "question": "Show all of the matches that france has won",
+    "query": "SELECT DISTINCT T1.teamname, T3.teamname, T2.home_team_goals FROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    Join national_team as T3 On T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'France' and T2.did_home_win = 'true'\n\n\nUNION ALL\n\nSELECT DISTINCT T1.teamname, T3.teamname, T2.away_team_goals FROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.away_team_id\n    Join national_team as T3 On T3.team_id = T2.home_team_id\nWHERE T1.teamname = 'France' and T2.did_home_win = 'false'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 853,
+    "question": "List of players which never won a game",
+    "query": "SELECT T1.player_name FROM player AS T1\n  WHERE T1.player_id NOT IN(\n SELECT DISTINCT T1.player_id\n FROM player AS T1\n  JOIN player_fact AS T2 on T1.player_id = T2.player_id\n  JOIN national_team AS T3 on T3.team_id = T2.team_id\n  JOIN match AS T4 on T4.home_team_id = T3.team_id\nwhere T4.did_home_win = 'true' )\nAND T1.player_id NOT IN(\nSELECT DISTINCT T1.player_id\n FROM player AS T1\n  JOIN player_fact AS T2 on T1.player_id = T2.player_id\n  JOIN national_team AS T3 on T3.team_id = T2.team_id\n  JOIN match AS T4 on T4.away_team_id = T3.team_id\nwhere T4.did_home_win = 'false' AND T4.is_draw = 'false' );",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 859,
+    "question": "how all french stadium",
+    "query": "SELECT * FROM stadium AS T1 WHERE T1.country = 'France'",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 873,
+    "question": "player name Khan",
+    "query": "Select * from player where player_name ilike '%Khan%';",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 876,
+    "question": "is there a stadium in Zurich",
+    "query": "SELECT * FROM stadium AS T1 WHERE T1.city = 'Zurich'",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 878,
+    "question": "which teams have never won a world cup",
+    "query": "SELECT DISTINCT teamname\nFROM national_team\nWHERE teamname NOT IN (\n  SELECT teamname\n  FROM world_cup\n      join national_team ON world_cup.winner = national_team.team_id);\n",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 879,
+    "question": "which teams have never ever won a world cup",
+    "query": "SELECT DISTINCT teamname FROM national_team WHERE teamname\nNOT IN (SELECT teamname FROM national_team AS T1 JOIN world_cup as T2 ON T2.winner = T1.team_id\n);",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 884,
+    "question": "How many yellow cards are in 2014?",
+    "query": "SELECT count(T1.player_name)\nFROM player AS T1\n    JOIN match_fact AS T2 ON T1.player_id = T2.player_id\n    JOIN match as m on m.match_id = T2.match_id\nWHERE T2.yellow_card = 'true' and year = 2014;",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 886,
+    "question": "What is the amount of games without a goal?",
+    "query": "SELECT COUNT(*)\nFROM match AS T1\nWHERE T1.away_team_goals = 0 and T1.home_team_goals = 0;",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 897,
+    "question": "Show the worldcup winner in 1934",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1 JOIN world_cup AS T2 ON T1.team_id = T2.winner\nWHERE T2.year = 1934",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 899,
+    "question": "How many years played Lionel Messi for Barcelona?",
+    "query": "SELECT DISTINCT T2.end_year - T2.start_year FROM club AS T1 JOIN player_club_team as T2 on T1.club_id = T2.club_id JOIN player AS T3 ON T3.player_id = T2.player_id WHERE T1.club_name = 'FC Barcelona' and T3.player_name = 'Lionel Messi'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 902,
+    "question": "Year with more matches played ?",
+    "query": "SELECT DISTINCT count(year), year FROM match as T1 group by year order by count(year) DESC\n",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 906,
+    "question": "Which clubs plays in the Premier League of Bosnia and Herzegovina?",
+    "query": "SELECT club_name FROM club as T1 join club_league_history AS T2 ON T1.club_id = T2.club_id JOIN league AS T3 ON T3.league_id = T2.league_id WHERE T1.country ilike '%Bosnia and Herzegovina%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 913,
+    "question": "which nation did not win a worldcup",
+    "query": "SELECT Distinct T1.teamname\nFROM national_team AS T1\nWHERE T1.teamname NOT IN\n      (SELECT T1.teamname\n       from national_team as T1\n           JOIN world_cup AS T2\n               ON T1.team_id = T2.winner)",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 916,
+    "question": "Where plays xherdan shaqiri?",
+    "query": "SELECT club_team_name from player AS T1 Join player_club_team as T2 on T1.player_id = T2.player_id WHERE T1.player_name ilike '%Xherdan Shaqiri%'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 918,
+    "question": "which is the oldest club and when was ist found?",
+    "query": "SELECT T1.club_name, T1.found_year FROM club AS T1 ORDER BY T1.found_year ASC LIMIT 1",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 920,
+    "question": "Show the clubs from USA",
+    "query": "SELECT * FROM club AS T1 WHERE T1.country = 'United States of America'",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 922,
+    "question": "Cristiano Ronaldo has yellow card",
+    "query": "SELECT count(yellow_card) FROM match_fact AS T1 Join player AS T2 on T1.player_id = T2.player_id WHERE T2.player_name ilike '%Ronaldo%' and T1.yellow_card = 'true'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 927,
+    "question": "WHO WON THE WORLD CUP IN 1994?",
+    "query": "SELECT T1.teamname FROM national_team AS T1 JOIN world_cup AS T2 ON T1.team_id = T2.winner WHERE T2.year = 1994 ",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 933,
+    "question": "which final had the most attendes?",
+    "query": "SELECT T1.venue, T2.year, T2.attendance FROM world_cup AS T1 JOIN match AS T2 ON T1.year = T2.year ORDER BY T2.attendance DESC LIMIT 1",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 934,
+    "question": "who are the top 5 nations to win the world cup?",
+    "query": "SELECT T1.teamname, count(*)\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nGROUP BY T1.teamname\nORDER BY count(*) DESC LIMIT 5",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 937,
+    "question": "Who won the world cup 1990?",
+    "query": "SELECT T1.teamname FROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner \n    WHERE T2.year = 1990",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 940,
+    "question": "Who scored the most in Korea?",
+    "query": "SELECT T1.player_name, count(*) FROM player AS T1\nJOIN match_fact AS T2 ON T1.player_id = T2.player_id\nJOIN national_team AS T3 ON T3.team_id = T2.team_id\nJOIN match AS T4 ON T2.match_id = T4.match_id\nWHERE T2.goal = 'true' and T3.teamname = 'Korea Republic'\nGROUP BY T1.player_name\nORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 950,
+    "question": "In which year and nation there was most attendance in a worldcup, excluding Qatar ?",
+    "query": "SELECT T1.year, T2.country, T1.attendance\nFROM world_cup AS T1\n    JOIN match AS T3 ON T1.year = T3.year\n    JOIN stadium AS T2 ON T3.stadium_id = T2.stadium_id\nWHERE T2.country != 'Qatar' ORDER BY T1.attendance DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 953,
+    "question": "Who has the nickname Special one?",
+    "query": "SELECT T1.player_name FROM player AS T1 WHERE T1.nickname = 'Special one'",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 954,
+    "question": "Who won the Worldcup 1990?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nWHERE T2.year = 1990",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 956,
+    "question": "number of games lost by germany?",
+    "query": "SELECT COUNT(*)\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T3.teamname = 'Germany' and T2.did_home_win = 'true' OR T1.teamname = 'Germany' and T2.did_home_win = 'false' and T2.is_draw = 'false'\n",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 957,
+    "question": "Who won the worldcup 1994?",
+    "query": "SELECT T1.teamname\nFROM national_team AS T1\n    JOIN world_cup AS T2 ON T1.team_id = T2.winner\nWHERE T2.year = 1994",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 962,
+    "question": "Which player scored t most goal",
+    "query": "SELECT T1.player_name, count(*) FROM player AS T1 JOIN match_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.goal = 'true' GROUP BY T1.player_name ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 964,
+    "question": "the stadium in which to most own goals happend",
+    "query": "SELECT T1.stadium_name, count( T2.own_goal) \n FROM stadium AS T1 \n JOIN match AS T3 ON T1.stadium_id = T3.stadium_id \n JOIN match_fact AS T2 ON T3.match_id = T2.match_id \n WHERE T2.own_goal = 'true' \n GROUP BY T1.stadium_name \n ORDER BY count( T2.own_goal) DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 966,
+    "question": "How many worldcup has angola played ?",
+    "query": "SELECT count(*) FROM national_team AS T1 WHERE T1.teamname = 'Angola'",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 970,
+    "question": "Goals by player",
+    "query": "SELECT T2.player_name, count(*) \n FROM match_fact AS T1 \n JOIN player AS T2 ON T1.player_id = T2.player_id \n WHERE T1.goal = 'true' \n GROUP BY T2.player_name\n ORDER BY count(*) DESC",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 976,
+    "question": "In which year has angola played in a world cup?",
+    "query": "SELECT year\n FROM national_team AS T1 \n WHERE T1.teamname = 'Angola'",
+    "hardness": "easy"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 978,
+    "question": "Who arrived third in worldcup 2018 ?",
+    "query": "SELECT T1.teamname \n FROM national_team AS T1 \n JOIN world_cup AS T2 on T1.team_id = T2.third\n WHERE T2.year = 2018",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 979,
+    "question": "which team has placed fourth the most",
+    "query": "SELECT teamname, count(*)\n FROM national_team AS n\n JOIN world_cup AS w on n.team_id = w.fourth\n GROUP BY teamname\n ORDER BY count(*) desc\n LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 980,
+    "question": "which country has placed most on 3th place",
+    "query": "SELECT T1.teamname, count(*)\n FROM national_team AS T1\n JOIN world_cup AS T2 ON T1.team_id = T2.third\n GROUP BY T1.teamname\n ORDER BY count(*) desc\n LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 981,
+    "question": "Which teams were in the Round of 16 in 2006",
+    "query": "SELECT T2.teamname\nfrom match as T1\n    join national_team as T2 on T2.team_id = T1.home_team_id\n WHERE T1.stage = 'Round of 16' and T1.year = 2006\nUNION\nSELECT T2.teamname\nfrom match as T1\n    join national_team as T2 on T2.team_id = T1.away_team_id\n WHERE T1.stage = 'Round of 16' and T1.year = 2006",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 982,
+    "question": "Who is the current coach the Brazilian national team?",
+    "query": "SELECT distinct T1.coach_name \n FROM coach AS T1 \n JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id \n JOIN national_team AS T2 ON T3.team_id = T2.team_id \n WHERE T2.teamname = 'Brazil' and T2.year = 2022",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 983,
+    "question": "how where the last five trainers of italy",
+    "query": "SELECT distinct T1.coach_name, t2.year \n FROM coach AS T1 \n JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id \n JOIN national_team AS T2 ON T3.team_id = T2.team_id \n WHERE T2.teamname = 'Italy' \n ORDER BY T2.year desc\n LIMIT 5",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 985,
+    "question": "When was the FC Barcelone invented",
+    "query": "SELECT found_year\n FROM club\n WHERE club_name like 'FC Barcelona'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 986,
+    "question": "Italy's coaches from 2000-2022",
+    "query": "SELECT distinct T1.coach_name\n FROM coach AS T1 \n JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id \n JOIN national_team AS T2 ON T3.team_id = T2.team_id \n WHERE T2.year >= 2000 and T2.year <= 2022 AND T2.teamname = 'Italy'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 987,
+    "question": "Show the coach who have coached United Kingdom club",
+    "query": "SELECT distinct coach_name\n FROM coach as c\n JOIN coach_club_team as cc on c.coach_id = cc.coach_id\n JOIN club as cl on cc.club_id = cl.club_id\n WHERE club_name ilike '%United Kingdom club%'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 989,
+    "question": "Show me the player of Portugal?",
+    "query": "SELECT player_name \n FROM player AS p\n JOIN player_fact AS pf on p.player_id = pf.player_id\n JOIN national_team AS n on pf.team_id = n.team_id\n WHERE teamname = 'Portugal'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 993,
+    "question": "who was Italy's trainer from 2004",
+    "query": "SELECT distinct T1.coach_name\n FROM coach AS T1 \n JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id \n JOIN national_team AS T2 ON T3.team_id = T2.team_id \n WHERE T2.year = 2004 AND T2.teamname = 'Italy'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 996,
+    "question": "all names of Italy's coaches from 2000-2022",
+    "query": "SELECT T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Italy' and T2.year >= 2000 and T2.year <= 2022",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 998,
+    "question": "Trainer Italy Worldcup 2006",
+    "query": "SELECT DISTINCT coach_name\n FROM coach AS t1\n JOIN player_fact AS t2 ON t1.coach_id = t2.coach_id\n JOIN national_team AS t3 ON t2.team_id = t3.team_id\n WHERE t3.teamname = 'Italy' AND t3.year = 2006",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1008,
+    "question": "Who is the Coach of Italy 2016",
+    "query": "SELECT DISTINCT T1.coach_name FROM coach AS T1 JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id JOIN national_team AS T2 ON T3.team_id = T2.team_id WHERE T2.teamname = 'Italy' and T2.year = 2016",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1011,
+    "question": "Brazil player number 7",
+    "query": "SELECT T1.player_name\n FROM player AS T1\n  JOIN player_fact AS T3 ON T1.player_id = T3.player_id\n  JOIN national_team AS T2 ON T3.team_id = T2.team_id\n WHERE T2.teamname = 'Brazil' and T3.shirt_number = 7",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1016,
+    "question": "which coaches from germany have trained a player with the shirt number 10?",
+    "query": "SELECT DISTINCT T1.coach_name\n FROM coach AS T1\n  JOIN player_fact AS T2 ON T1.coach_id = T2.coach_id\n WHERE T2.shirt_number = 10 and T1.country_code = 'GER'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1017,
+    "question": "all coaches from germany who trained a player with the shirt number 10",
+    "query": "SELECT DISTINCT T1.coach_name\n FROM coach AS T1\n  JOIN player_fact AS T2 ON T1.coach_id = T2.coach_id\n WHERE T2.shirt_number = 10 and T1.country_code = 'GER'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1020,
+    "question": "all coaches training a player with the shirt number 100",
+    "query": "SELECT DISTINCT T1.coach_name\n FROM coach AS T1\n  JOIN player_fact AS T2 ON T1.coach_id = T2.coach_id\n WHERE T2.shirt_number = 100",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1025,
+    "question": "hirt number 13 goal score",
+    "query": "SELECT count(*)\n FROM match_fact AS T1\n JOIN player_fact as T2 on T1.player_id = T2.player_id\n where T2.shirt_number = 13 AND T1.goal = 'true'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1035,
+    "question": "How is the current trainer of Ronaldo?",
+    "query": "SELECT T1.coach_name FROM coach AS T1\n JOIN player_fact AS T3 ON T1.coach_id = T3.coach_id\n JOIN player AS T2 ON T3.player_id = T2.player_id\n WHERE T2.player_name = 'Ronaldo'\n ORDER BY T3.year_id DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1037,
+    "question": "hirt number 13 total goal score",
+    "query": "SELECT count(*)\n FROM match_fact as T1\n JOIN player_fact as T2 on T1.player_id = T2.player_id\n WHERE T2.shirt_number = 13 AND T1.goal = 'true'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1038,
+    "question": "Which player wears the shirt number 1?",
+    "query": "SELECT T1.player_name FROM player AS T1 JOIN player_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.shirt_number = 1",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1040,
+    "question": "how many penalties in 2006?",
+    "query": "SELECT count(*)\n FROM match_fact as T1\n WHERE T1.penalty = 'true' AND T1.team_id IN (\n     SELECT T2.winner\n     FROM world_cup AS T2\n     WHERE T2.year = 2006\n     UNION\n     SELECT T2.runner_up\n     FROM world_cup AS T2\n     WHERE T2.year = 2006\n     UNION\n     SELECT T2.third\n     FROM world_cup AS T2\n     WHERE T2.year = 2006\n     UNION\n     SELECT T2.fourth\n     FROM world_cup AS T2\n     WHERE T2.year = 2006\n     )",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1048,
+    "question": "Who has the highest count of missed penalty?",
+    "query": "SELECT count( T1.missed_penalty), T2.player_name FROM match_fact AS T1 JOIN player AS T2 ON T1.player_id = T2.player_id WHERE T1.missed_penalty = 'true' GROUP BY T2.player_name ORDER BY count( T1.missed_penalty) DESC LIMIT 1",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1049,
+    "question": "Which player wears the shirt number 17?",
+    "query": "SELECT T1.player_name FROM player AS T1 JOIN player_fact AS T2 ON T1.player_id = T2.player_id WHERE T2.shirt_number = 17",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1054,
+    "question": "Penalties in 2018",
+    "query": "SELECT count(*)\n FROM match_fact AS T1\n  JOIN match as T2 on T1.match_id = T2.match_id\n WHERE T2.year = 2018 and T1.penalty = 'true'",
+    "hardness": "medium"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1057,
+    "question": "Wich teams scored at least one goal in 2014",
+    "query": "SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN match AS T3 ON T1.team_id = T3.home_team_id JOIN match_fact AS T2 ON T3.match_id = T2.match_id WHERE T1.year = 2014 and T2.goal = 'true' UNION SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN match AS T3 ON T1.team_id = T3.away_team_id JOIN match_fact AS T2 ON T3.match_id = T2.match_id WHERE T1.year = 2014 and T2.goal = 'true'",
+    "hardness": "extra"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1059,
+    "question": "which game had zero goals in 2014",
+    "query": "SELECT T1.teamname, T2.home_team_goals, T3.teamname, T2.away_team_goals, T2.year\nFROM national_team AS T1\n    JOIN match AS T2 ON T2.home_team_id = T1.team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T2.home_team_goals = 0 AND T2.away_team_goals = 0 AND T2.year = 2014",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1060,
+    "question": "Teams that scored at least one goal in 2014",
+    "query": "SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN match AS T3 ON T1.team_id = T3.home_team_id JOIN match_fact AS T2 ON T3.match_id = T2.match_id WHERE T1.year = 2014 and T2.goal = 'true' UNION SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN match AS T3 ON T1.team_id = T3.away_team_id JOIN match_fact AS T2 ON T3.match_id = T2.match_id WHERE T1.year = 2014 and T2.goal = 'true'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1065,
+    "question": "In what world cup was there no match with the team serbia?",
+    "query": "SELECT t1.year\n FROM world_cup as t1\n EXCEPT\n SELECT t2.year\n FROM national_team as t2\n WHERE t2.teamname = 'Serbia'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1068,
+    "question": "In what world cup was there no match with serbia?",
+    "query": "SELECT t1.year\n FROM world_cup as t1\n EXCEPT\n SELECT t2.year\n FROM national_team as t2\n WHERE t2.teamname = 'Serbia'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1070,
+    "question": "Wich teams scored at least one goal in 2014?",
+    "query": "SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN match AS T3 ON T1.team_id = T3.home_team_id JOIN match_fact AS T2 ON T3.match_id = T2.match_id WHERE T1.year = 2014 and T2.goal = 'true' UNION SELECT DISTINCT T1.teamname FROM national_team AS T1 JOIN match AS T3 ON T1.team_id = T3.away_team_id JOIN match_fact AS T2 ON T3.match_id = T2.match_id WHERE T1.year = 2014 and T2.goal = 'true'",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1071,
+    "question": "Against who lost germany in wm 2014.",
+    "query": "SELECT T3.teamname\n FROM match AS T1\n    JOIN national_team AS T2 ON T1.home_team_id = T2.team_id\n    JOIN national_team AS T3 ON T1.away_team_id = T3.team_id\nWHERE T3.teamname = 'Germany' and T1.did_home_win = 'true' AND T1.year = 2014\nUNION\nSELECT T3.teamname\n FROM match AS T1\n    JOIN national_team AS T2 ON T1.home_team_id = T2.team_id\n    JOIN national_team AS T3 ON T1.away_team_id = T3.team_id\n WHERE T2.teamname = 'Germany' and T1.did_home_win = 'False' AND T1.is_draw = 'False' AND T1.year = 2014",
+    "hardness": "hard"
+  },
+  {
+    "db_id": "exp_v1",
+    "id": 1074,
+    "question": "How many goals did Switzerland have against serbian",
+    "query": "SELECT T2.home_team_goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Switzerland' AND T3.teamname = 'Serbia'\nUNION\nSELECT T2.away_team_goals\nFROM national_team AS T1\n    JOIN match AS T2 ON T1.team_id = T2.home_team_id\n    JOIN national_team AS T3 on T3.team_id = T2.away_team_id\nWHERE T1.teamname = 'Serbia' AND T3.teamname = 'Switzerland'",
+    "hardness": "hard"
+  }
+]
