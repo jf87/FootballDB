@@ -1,2 +1,9 @@
-# FootballDB
-FootballDB: Exploring NL-to-SQL Systems in the Real-World
+# FootballDB: Exploring NL-to-SQL Systems in the Real-World
+
+This repository contains both the data and code to reproduce the results of our VLDB submission "FootballDB: Exploring NL-to-SQL Systems in the Real-World".
+
+## Data and Code.
+
+- `./data/FootballDB` contains PostgreSQL database for each data model (v1, v2, v3) as well as the train and test data for each data model. The train data is provided in different splits of 100, 200 and 300 NL-SQL pairs.
+- `./data/results` contains the results for each of the 5 evaluated NL-to-SQL systems, for each data model and for each split.
+- `./src/analysis` contains the source code to analyse the results. It reproduces the plots that are also contained in the paper.
