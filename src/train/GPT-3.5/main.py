@@ -155,9 +155,7 @@ def get_args():
 def main():
     args = get_args()
     world_cup_path = args.data_path
-    project_key = "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"
-    # key="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"
-    my_key = "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"
+    project_key = "OPENAI_API_KEY"
     os.environ["OPENAI_API_KEY"] = project_key
 
     llm = OpenAI(temperature=args.temperature,

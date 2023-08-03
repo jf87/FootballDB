@@ -414,11 +414,11 @@ def aliastype(t):
     return res
 
 def posrtgresql_db():
-    host = 'testbed.inode.igd.fraunhofer.de'
+    host = ''
     port = 18001
     database = 'world_cup'
-    username = 'inode_readonly'
-    password = 'W8BYqhSemzyZ64YD'
+    username = ''
+    password = ''
     database_uri = f'postgresql://{username}:{password}@{host}:{str(port)}/{database}'
     db = SQLDatabase.from_uri(database_uri)
     print(db.get_table_info_no_throw())
@@ -457,28 +457,15 @@ def schema_db_sqllite(url, include_tables=None, sample_number=0, alias=False):
     return formatting(db.get_table_info_dict())
 
 
-def schema_db_postgres(include_tables=None, sample_number=0, alias=False):
-    host = '160.85.252.185'
-    port = 18001
-    database = 'postgres'
-    username = 'dbadmin@sdbpstatbot01'
-    password = '579fc314a8f73e881a9146901971d5b9'
-    schema = 'experiment'
-    database_uri = f'postgresql://{username}:{password}@{host}:{str(port)}/{database}'
-    db = SQLDatabase.from_uri(database_uri, schema=schema,
-                              include_tables= include_tables,
-                              sample_rows_in_table_info=sample_number)
-
-    return formatting(db.get_table_info_dict())
 
 
 def schema_worldcup_db_postgres(include_tables=None, sample_number=0, schema=None, alias=False):
 
-    host = 'testbed.inode.igd.fraunhofer.de'
+    host = 'host'
     port = 18001
     database = 'world_cup'
-    username = 'postgres'
-    password = 'vdS83DJSQz2xQ'
+    username = ''
+    password = ''
     schema = schema
     database_uri = f'postgresql://{username}:{password}@{host}:{str(port)}/{database}'
     db = SQLDatabase.from_uri(database_uri, schema=schema,
