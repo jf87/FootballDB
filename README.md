@@ -2,6 +2,8 @@
 
 This repository contains both the data and code to reproduce the results of our VLDB submission "FootballDB: Exploring NL-to-SQL Systems in the Real-World".
 
+![plot](./deployment.png)
+
 ## Data and Code.
 
 - [`./data/FootballDB`](./data/FootballDB) contains PostgreSQL database for each data model (v1, v2, v3) as well as the train and test data for each data model. The train data is provided in different splits of 100, 200 and 300 NL-SQL pairs.
