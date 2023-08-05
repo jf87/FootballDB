@@ -1,6 +1,6 @@
 # FootballDB: Exploring NL-to-SQL Systems in the Real-World
 
-This repository contains both the data and code to reproduce the results of our VLDB submission "FootballDB: Exploring NL-to-SQL Systems in the Real-World".
+This repository contains both the data and code to reproduce the results of our VLDB submission "FootballDB: Exploring NL-to-SQL Systems in the Real-World" (Fuerst, Kosten, Nooralahzadeh, Zhang, & Stockinger).
 
 ![plot](./deployment.png)
 
