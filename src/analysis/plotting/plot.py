@@ -34,6 +34,7 @@ def set_style(font_scale=1.0, style_rc=None):
     # sns.set(font_scale=font_scale)
     # if style_rc != None:
     sns.set(font='serif', font_scale=font_scale, rc=style_rc)
+    # sns.set(font='serif', font_scale=font_scale)
     sns.set_style('whitegrid', {'axes.edgecolor': '.0', 'grid.linestyle': u'--',
                                 'grid.color': '.8', 'xtick.color': '.15',
                                 'xtick.minor.size': 3.0, 'xtick.major.size':
@@ -41,6 +42,7 @@ def set_style(font_scale=1.0, style_rc=None):
                                 3.0, 'ytick.major.size': 6.0,
                                 "font.family": "serif",
                                 "font.serif": ["Times", "Palatino", "serif"]
+                                # , "patch.linewidth":1.1
                                 })
     matplot_colors = ["b", "g", "r", "c", "m", "y", "k", "w"]
     custom_colors = get_colors()
@@ -124,11 +126,13 @@ def plot_bars(df, x="hardness", hue="split", system = "T5", order=None):
     f.tight_layout()
     f.savefig(system+"-"+x+".pdf", bbox_inches='tight')
 
-def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, rotation=0):
+def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, hue_order=None, rotation=0):
 
     counts_0 = df[df["db_id"]=="exp_v1"][x].value_counts()
-    erroneous_counts_0 = df[(df["system"]==r"GPT-3.5$_{s+c}$") & (df["db_id"]=="exp_v1")][x].value_counts()*2*(2/3)
-    counts_0 = (counts_0-erroneous_counts_0)/len(df[hue].unique())
+    
+    erroneous_counts_gpt_0 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_0 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
+    counts_0 = (counts_0-(erroneous_counts_gpt_0+erroneous_counts_llama_0))/len(df[hue].unique())
 
     set_style(font_scale=1.2)
     f, axs = plt.subplots(1, 3, figsize=(12, 4), sharey=True)
@@ -138,9 +142,11 @@ def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, r
         data = df[(df["db_id"]=="exp_v1")]
 
     ncol = len(df[hue].unique())
-    hue_order = sorted(df[hue].unique())
+    if not hue_order:
+        hue_order = sorted(df[hue].unique())
+    
     sns.barplot(x=x, y='label', hue=hue, data=data, ax=axs[0],
-                errorbar=None, order=order, hue_order=hue_order)
+                errorbar=None, order=order, hue_order=hue_order, edgecolor="black")
     axs[0].set_title('Data Model v1')
     axs[0].set_ylim(0, 1)
     axs[0].set_ylabel("Execution Accuracy")
@@ -157,7 +163,7 @@ def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, r
     else:
         data = df[(df["db_id"]=="exp_v2")]
     sns.barplot(x=x, y='label', hue=hue, data=data, ax=axs[1],
-                errorbar=None, order=order,hue_order=hue_order)
+                errorbar=None, order=order,hue_order=hue_order, edgecolor="black")
 
     axs[1].set_title('Data Model v2')
     axs[1].set_ylabel("")
@@ -168,24 +174,32 @@ def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, r
 
     max_height_1 = max([p.get_height() for p in axs[1].patches])
     counts_1 = df[df["db_id"]=="exp_v2"][x].value_counts()
-    # print(counts_1)
-    erroneous_counts_1 = df[(df["system"]==r"GPT-3.5$_{s+c}$") & (df["db_id"]=="exp_v2")][x].value_counts()*2*(2/3)
-    # print(erroneous_counts_1)
-    counts_1 = (counts_1-erroneous_counts_1)/len(df[hue].unique())
-    # print(counts_1)
-    # print(len(df[hue].unique()))
+    
+    erroneous_counts_gpt_1 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_1 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
+    counts_1 = (counts_1-(erroneous_counts_gpt_1+erroneous_counts_llama_1))/len(df[hue].unique())
+
+
+    # erroneous_counts_1 = df[(df["system"]==r"GPT-3.5$_{s}$") & (df["db_id"]=="exp_v2")][x].value_counts()*2*(2/3)
+    # counts_1 = (counts_1-erroneous_counts_1)/len(df[hue].unique())
     
     if system:
         data = df[(df["db_id"]=="exp_v3") & (df["system"]==system)]
     else:
         data = df[(df["db_id"]=="exp_v3")]
     sns.barplot(x=x, y='label', hue=hue, data=data, ax=axs[2],
-                errorbar=None, order=order, hue_order=hue_order)
+                errorbar=None, order=order, hue_order=hue_order, edgecolor="black")
 
     max_height_2 = max([p.get_height() for p in axs[2].patches])
     counts_2 = df[df["db_id"]=="exp_v3"][x].value_counts()
-    erroneous_counts_2 = df[(df["system"]==r"GPT-3.5$_{s+c}$") & (df["db_id"]=="exp_v3")][x].value_counts()*2*(2/3)
-    counts_2 = (counts_2-erroneous_counts_2)/len(df[hue].unique())
+
+    erroneous_counts_gpt_2 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_2 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
+    counts_2 = (counts_2-(erroneous_counts_gpt_2+erroneous_counts_llama_2))/len(df[hue].unique())
+
+    
+    # erroneous_counts_2 = df[(df["system"]==r"GPT-3.5$_{s}$") & (df["db_id"]=="exp_v3")][x].value_counts()*2*(2/3)
+    # counts_2 = (counts_2-erroneous_counts_2)/len(df[hue].unique())
     
     axs[2].set_title('Data Model v3')
     # sns.move_legend(axs[2], "upper left", bbox_to_anchor=(1, 1))
@@ -239,9 +253,10 @@ def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, r
     
     # Get the handles and labels. For this example, we'll use the ones from the last subplot, axs[2]
     handles, labels = axs[2].get_legend_handles_labels()
-    
+
     # When creating the legend, you can specify the number of columns
     f.legend(handles, labels, loc='lower center', ncol=ncol, bbox_to_anchor=(0.5, -0.1))
+    # , frameon=True).get_frame().set_edgecolor('black')
     
     # sns.scatterplot(data=penguins, x="flipper_length_mm", y="bill_length_mm", hue="species", ax=axs[0])
     # sns.histplot(data=penguins, x="species", hue="species", shrink=.8, alpha=.8, legend=False, ax=axs[1])
@@ -292,16 +307,16 @@ def plot_single_bar(df, x="hardness", hue="split", system = "T5", order=None, fi
     f.savefig(filename, bbox_inches='tight')
 
 
-def plot_bars_vertical(df, x="hardness", hue="split", system = "T5", order=None,
-                       filename="", figsize=(12,12), font_scale=1.4, rotation=0):
+def plot_bars_vertical(df, x="hardness", hue="split", system = "T5", order=None, hue_order=None,
+                       filename="", figsize=(14,12), font_scale=1.4, rotation=0):
     # sns.set_style("whitegrid")
 
     counts_0 = df[df["db_id"]=="exp_v1"][x].value_counts()
-    # print(counts_0)
-    erroneous_counts_0 = df[(df["system"]==r"GPT-3.5$_{s+c}$") & (df["db_id"]=="exp_v1")][x].value_counts()*2*(2/3)
-    # print(erroneous_counts_0)
-    counts_0 = (counts_0-erroneous_counts_0)/len(df[hue].unique())
-    # print(counts_0)
+    # erroneous_counts_gpt_0 = df[(df["system"]==r"GPT-3.5$_{s+c}$") & (df["db_id"]=="exp_v1")][x].value_counts()*2*(2/3)                           
+    erroneous_counts_gpt_0 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_0 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
+
+    counts_0 = (counts_0-(erroneous_counts_gpt_0+erroneous_counts_llama_0))/len(df[hue].unique())
                            
     set_style(font_scale=font_scale)
     f, axs = plt.subplots(3, 1, figsize=figsize, sharex=True)
@@ -311,9 +326,10 @@ def plot_bars_vertical(df, x="hardness", hue="split", system = "T5", order=None,
         data = df[(df["db_id"]=="exp_v1")]
 
     ncol = len(df[hue].unique())
-    hue_order = sorted(df[hue].unique())
+    if not hue_order:                  
+        hue_order = sorted(df[hue].unique())
     sns.barplot(x=x, y='label', hue=hue, data=data, ax=axs[0],
-                errorbar=None, order=order, hue_order=hue_order)
+                errorbar=None, order=order, hue_order=hue_order, edgecolor="black")
                            
     max_height_0 = max([p.get_height() for p in axs[0].patches])
                            
@@ -331,12 +347,14 @@ def plot_bars_vertical(df, x="hardness", hue="split", system = "T5", order=None,
     else:
         data = df[(df["db_id"]=="exp_v2")]
     sns.barplot(x=x, y='label', hue=hue, data=data, ax=axs[1],
-                errorbar=None, order=order,hue_order=hue_order)
+                errorbar=None, order=order,hue_order=hue_order, edgecolor="black")
 
     max_height_1 = max([p.get_height() for p in axs[1].patches])
     counts_1 = df[df["db_id"]=="exp_v2"][x].value_counts()
-    erroneous_counts_1 = df[(df["system"]==r"GPT-3.5$_{s+c}$") & (df["db_id"]=="exp_v2")][x].value_counts()*2*(2/3)
-    counts_1 = (counts_1-erroneous_counts_1)/len(df[hue].unique())
+                           
+    erroneous_counts_gpt_1 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_1 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
+    counts_1 = (counts_1-(erroneous_counts_gpt_1+erroneous_counts_llama_1))/len(df[hue].unique())
 
     axs[1].set_title('Data Model v2')
     axs[1].set_ylabel("Execution Accuracy")
@@ -350,12 +368,15 @@ def plot_bars_vertical(df, x="hardness", hue="split", system = "T5", order=None,
     else:
         data = df[(df["db_id"]=="exp_v3")]
     sns.barplot(x=x, y='label', hue=hue, data=data, ax=axs[2],
-                errorbar=None, order=order, hue_order=hue_order)
+                errorbar=None, order=order, hue_order=hue_order, edgecolor="black")
 
     max_height_2 = max([p.get_height() for p in axs[2].patches])
     counts_2 = df[df["db_id"]=="exp_v3"][x].value_counts()
-    erroneous_counts_2 = df[(df["system"]==r"GPT-3.5$_{s+c}$") & (df["db_id"]=="exp_v3")][x].value_counts()*2*(2/3)
-    counts_2 = (counts_2-erroneous_counts_2)/len(df[hue].unique())
+
+                           
+    erroneous_counts_gpt_2 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_2 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
+    counts_2 = (counts_2-(erroneous_counts_gpt_2+erroneous_counts_llama_2))/len(df[hue].unique())
                            
     axs[2].set_title('Data Model v3')
     # sns.move_legend(axs[2], "upper left", bbox_to_anchor=(1, 1))

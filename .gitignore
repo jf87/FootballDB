@@ -1,3 +1,5 @@
-.ipynb_checkpoints
-.DS_Store
-.idea
+*.ipynb_checkpoints
+*.DS_Store
+*.idea
+*.pdf
+__pycache__
