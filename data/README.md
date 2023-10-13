@@ -14,8 +14,8 @@ Each of these folders contains the data for each version of the database schema 
 
 The [results](results) file contains all of the evaluation results for each NL-to-SQL system used in our evaluations: 
 
-* [GPT-3.5_s](results/GPT-3.5_s/) --> zero shot and few shot results
-* [GPT-3.5_sc](results/GPT-3.5_sc/) --> zero shot and few shot results
+* [GPT-3.5](results/GPT-3.5_s/) --> zero shot and few shot results
+* [LlaMA2-70B](results/LlaMA2-70B/) --> zero shot and few shot results
 * [T5-Picard](results/T5-Picard/) --> zero shot and results for each training split
-* [T5](results/T5/) --> zero shot and results for each training split
+* [T5-Picard_Keys](results/T5/) --> zero shot and results for each training split
 * [ValueNet](results/ValueNet/) --> zero shot and results for each training split
