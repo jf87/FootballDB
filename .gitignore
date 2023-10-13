@@ -3,3 +3,6 @@
 *.idea
 *.pdf
 __pycache__
+lib
+bin
+.history
