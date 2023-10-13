@@ -17,5 +17,5 @@ The [results](results) file contains all of the evaluation results for each NL-t
 * [GPT-3.5](results/GPT-3.5_s/) --> zero shot and few shot results
 * [LlaMA2-70B](results/LlaMA2-70B/) --> zero shot and few shot results
 * [T5-Picard](results/T5-Picard/) --> zero shot and results for each training split
-* [T5-Picard_Keys](results/T5/) --> zero shot and results for each training split
+* [T5-Picard_Keys](results/T5-Picard-Keys/) --> zero shot and results for each training split
 * [ValueNet](results/ValueNet/) --> zero shot and results for each training split
