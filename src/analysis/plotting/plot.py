@@ -126,12 +126,12 @@ def plot_bars(df, x="hardness", hue="split", system = "T5", order=None):
     f.tight_layout()
     f.savefig(system+"-"+x+".pdf", bbox_inches='tight')
 
-def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, hue_order=None, rotation=0):
+def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, hue_order=None, rotation=0, filename=None):
 
     counts_0 = df[df["db_id"]=="exp_v1"][x].value_counts()
     
-    erroneous_counts_gpt_0 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
-    erroneous_counts_llama_0 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
+    erroneous_counts_gpt_0 = df[(df["system"]=="GPT-3.5") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_0 = df[(df["system"]=="Llama2-70b") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
     counts_0 = (counts_0-(erroneous_counts_gpt_0+erroneous_counts_llama_0))/len(df[hue].unique())
 
     set_style(font_scale=1.2)
@@ -175,8 +175,8 @@ def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, h
     max_height_1 = max([p.get_height() for p in axs[1].patches])
     counts_1 = df[df["db_id"]=="exp_v2"][x].value_counts()
     
-    erroneous_counts_gpt_1 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
-    erroneous_counts_llama_1 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
+    erroneous_counts_gpt_1 = df[(df["system"]=="GPT-3.5") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_1 = df[(df["system"]=="Llama2-70b") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
     counts_1 = (counts_1-(erroneous_counts_gpt_1+erroneous_counts_llama_1))/len(df[hue].unique())
 
 
@@ -193,8 +193,8 @@ def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, h
     max_height_2 = max([p.get_height() for p in axs[2].patches])
     counts_2 = df[df["db_id"]=="exp_v3"][x].value_counts()
 
-    erroneous_counts_gpt_2 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
-    erroneous_counts_llama_2 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
+    erroneous_counts_gpt_2 = df[(df["system"]=="GPT-3.5") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_2 = df[(df["system"]=="Llama2-70b") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
     counts_2 = (counts_2-(erroneous_counts_gpt_2+erroneous_counts_llama_2))/len(df[hue].unique())
 
     
@@ -262,7 +262,9 @@ def plot_bars_counts(df, x="hardness", hue="split", system = "T5", order=None, h
     # sns.histplot(data=penguins, x="species", hue="species", shrink=.8, alpha=.8, legend=False, ax=axs[1])
     f.suptitle(system, fontsize=14)
     f.tight_layout()
-    f.savefig(system+"-"+x+".pdf", bbox_inches='tight') 
+    if not filename:
+        filename = system+"-"+x
+    f.savefig(filename+".pdf", bbox_inches='tight') 
 
 
 
@@ -313,8 +315,8 @@ def plot_bars_vertical(df, x="hardness", hue="split", system = "T5", order=None,
 
     counts_0 = df[df["db_id"]=="exp_v1"][x].value_counts()
     # erroneous_counts_gpt_0 = df[(df["system"]==r"GPT-3.5$_{s+c}$") & (df["db_id"]=="exp_v1")][x].value_counts()*2*(2/3)                           
-    erroneous_counts_gpt_0 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
-    erroneous_counts_llama_0 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
+    erroneous_counts_gpt_0 = df[(df["system"]=="GPT-3.5") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_0 = df[(df["system"]=="Llama2-70b") & (df["db_id"]=="exp_v1")][x].value_counts()*1*(2/3)
 
     counts_0 = (counts_0-(erroneous_counts_gpt_0+erroneous_counts_llama_0))/len(df[hue].unique())
                            
@@ -352,8 +354,8 @@ def plot_bars_vertical(df, x="hardness", hue="split", system = "T5", order=None,
     max_height_1 = max([p.get_height() for p in axs[1].patches])
     counts_1 = df[df["db_id"]=="exp_v2"][x].value_counts()
                            
-    erroneous_counts_gpt_1 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
-    erroneous_counts_llama_1 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
+    erroneous_counts_gpt_1 = df[(df["system"]=="GPT-3.5") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_1 = df[(df["system"]=="Llama2-70b") & (df["db_id"]=="exp_v2")][x].value_counts()*1*(2/3)
     counts_1 = (counts_1-(erroneous_counts_gpt_1+erroneous_counts_llama_1))/len(df[hue].unique())
 
     axs[1].set_title('Data Model v2')
@@ -374,8 +376,8 @@ def plot_bars_vertical(df, x="hardness", hue="split", system = "T5", order=None,
     counts_2 = df[df["db_id"]=="exp_v3"][x].value_counts()
 
                            
-    erroneous_counts_gpt_2 = df[(df["system"]==r"GPT-3.5$_{Keys}$") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
-    erroneous_counts_llama_2 = df[(df["system"]=="Llama2-70b$_{Keys}$") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
+    erroneous_counts_gpt_2 = df[(df["system"]=="GPT-3.5") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
+    erroneous_counts_llama_2 = df[(df["system"]=="Llama2-70b") & (df["db_id"]=="exp_v3")][x].value_counts()*1*(2/3)
     counts_2 = (counts_2-(erroneous_counts_gpt_2+erroneous_counts_llama_2))/len(df[hue].unique())
                            
     axs[2].set_title('Data Model v3')
@@ -433,10 +435,14 @@ def plot_bars_vertical(df, x="hardness", hue="split", system = "T5", order=None,
     handles, labels = axs[2].get_legend_handles_labels()
     
     # When creating the legend, you can specify the number of columns
-    f.legend(handles, labels, loc='lower center', ncol=ncol, bbox_to_anchor=(0.5, -0.03))
+    f.legend(handles, labels, loc='lower center', ncol=ncol, bbox_to_anchor=(0.5, -0.04))
     
     # sns.scatterplot(data=penguins, x="flipper_length_mm", y="bill_length_mm", hue="species", ax=axs[0])
     # sns.histplot(data=penguins, x="species", hue="species", shrink=.8, alpha=.8, legend=False, ax=axs[1])
     f.suptitle(system, fontsize=14)
     f.tight_layout()
-    f.savefig(system+"-"+x+".pdf", bbox_inches='tight')
+                           
+    if not filename:
+        filename = system+"-"+x
+                           
+    f.savefig(filename+".pdf", bbox_inches='tight')
