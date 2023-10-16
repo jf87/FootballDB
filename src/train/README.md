@@ -4,5 +4,5 @@ The subfolders contain the training code and/or instructions on how to train and
 
 - [ValueNet](./ValueNet/)
 - [T5](./T5/)
-- [T5-Picard](./T5-Picard/)
+- [T5-Keys](./T5-Keys/)
 - [GPT-3.5](./GPT-3.5/)
