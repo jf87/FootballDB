@@ -1,7 +1,7 @@
-# FootballDB: Exploring NL-to-SQL Systems in the Real-World
+# FootballDB: Evaluating the Data Model Robustness of Text-to-SQL Systems Based on Real User Queries
 
 This repository contains both the data and code to reproduce the results of
-"FootballDB: Exploring NL-to-SQL Systems in the Real-World".
+"FootballDB: Evaluating the Data Model Robustness of Text-to-SQL Systems Based on Real User Queries".
 
 ![plot](./deployment.png)
 
