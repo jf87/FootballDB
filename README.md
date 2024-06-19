@@ -2,8 +2,11 @@
 
 This repository contains both the data and code to reproduce the results of
 
-**FootballDB: Evaluating the Data Model Robustness of Text-to-SQL Systems Based on Real User Queries**  
+**FootballDB: Evaluating the Data Model Robustness of Text-to-SQL Systems Based on Real User Queries**
+
 **Authors: Jonathan Fürst, Catherine Kosten, Farhad Nooralahzadeh, Yi Zhang, Kurt Stockinger**
+
+**Contact: jonathan.fuerst@zhaw.ch**
 
 To be presented at EDBT'25 (https://edbticdt2025.upc.edu)
 
